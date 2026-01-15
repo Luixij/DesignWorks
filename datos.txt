@@ -48,6 +48,7 @@ $env:DB_PASS="FcfR_El21"
 
 .\mvnw.cmd spring-boot:run
 
+PARA INICIAR SPRING BOOT
 ESTO FUNCIONA DESDE EL TERMINAL DE VISUAL STUDIO CODE EN LA CARPETA backend/backend
  mvn "-Dspring-boot.run.profiles=local" spring-boot:run
 
