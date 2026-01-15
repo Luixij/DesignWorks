@@ -37,3 +37,8 @@ infra/.env
 # Docker / infra
 **/data/
 **/logs/
+
+### VS Code ###
+.vscode/*
+!.vscode/launch.example.json
+.vscode/launch.json
