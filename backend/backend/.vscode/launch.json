@@ -10,7 +10,9 @@
         "SPRING_PROFILES_ACTIVE": "dev",
         "DB_URL": "jdbc:mariadb://127.0.0.1:3306/design_works",
         "DB_USER": "dsing_user",
-        "DB_PASS": "FcfR_El21"
+        "DB_PASS": "FcfR_El21",
+        "JWT_SECRET": "AppTkn",
+        "JWT_EXP_MINUTES": "240"
       }
     }
   ]
