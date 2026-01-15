@@ -18,3 +18,32 @@ Servidor: mariadb
 Usuario: dsing_user
 Pass: FcfR_El21
 Base datos: design_works
+
+---------------------------------------
+
+DOCKER
+
+User: luisscj678@gmail.com
+Pass: Car1322.4502Tw
+
+------------------------------------------
+
+CONECTAR SPRING BOOT CON BASE DE DATOS
+Variables definidas dentro del .env dentro de /backend
+
+En Mac / Linux:
+Desde la carpeta backend/:
+
+export DB_URL=jdbc:mariadb://127.0.0.1:3306/design_works
+export DB_USER=dsing_user
+export DB_PASS=FcfR_El21
+
+./mvnw spring-boot:run
+
+
+En Windows (PowerShell)
+$env:DB_URL="jdbc:mariadb://127.0.0.1:3306/design_works"
+$env:DB_USER="dsing_user"
+$env:DB_PASS="FcfR_El21"
+
+.\mvnw.cmd spring-boot:run
