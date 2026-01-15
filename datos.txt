@@ -47,3 +47,10 @@ $env:DB_USER="dsing_user"
 $env:DB_PASS="FcfR_El21"
 
 .\mvnw.cmd spring-boot:run
+
+Se define un launch.json dentro de .vscode para ejecutar directamente
+las variables necesarias para conectar springboot con mariadb.
+No he subido a git, he subido el archivo de ejemplo "launch.example.json"
+en /backend
+
+-----------------------------------------------------
