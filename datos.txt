@@ -1,0 +1,4 @@
+COMANDO ENTRAR MARIA DB CON DATOS ACTUALIZADO.
+Credenciales establecidad en .env de /infra
+
+docker exec -it designWorks_mariadb mariadb -u dsing_user -pFcfR_El21 design_works

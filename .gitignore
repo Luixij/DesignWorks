@@ -32,6 +32,7 @@ android/local.properties
 
 # Env
 .env
+infra/.env
 *.env
 
 # Docker / infra
