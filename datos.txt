@@ -2,3 +2,19 @@ COMANDO ENTRAR MARIA DB CON DATOS ACTUALIZADO.
 Credenciales establecidad en .env de /infra
 
 docker exec -it designWorks_mariadb mariadb -u dsing_user -pFcfR_El21 design_works
+
+
+COMANDOS BASE DE DATOS mariadb
+
+SHOW TABLES;
+SELECT COUNT(*) FROM usuarios;
+SELECT COUNT(*) FROM trabajos;
+SELECT * FROM trabajos ORDER BY id;
+
+GESTOR ADMINER BASE DE DATOS
+http://localhost:8081
+
+Servidor: mariadb
+Usuario: dsing_user
+Pass: FcfR_El21
+Base datos: design_works
