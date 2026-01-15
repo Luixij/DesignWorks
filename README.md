@@ -1,5 +1,4 @@
 # DesignWorks
-
 Repositorio monorepo para el proyecto DAM 2025/2026.
 
 ## Estructura
