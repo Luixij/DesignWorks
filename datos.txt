@@ -48,6 +48,13 @@ $env:DB_PASS="FcfR_El21"
 
 .\mvnw.cmd spring-boot:run
 
+ESTO FUNCIONA DESDE EL TERMINAL DE VISUAL STUDIO CODE EN LA CARPETA backend/backend
+ mvn "-Dspring-boot.run.profiles=local" spring-boot:run
+
+ ABRIR SPRING BOOT EN localhost: http://localhost:8082/
+    name: admin
+    password: d.MCmq2des
+
 Se define un launch.json dentro de .vscode para ejecutar directamente
 las variables necesarias para conectar springboot con mariadb.
 No he subido a git, he subido el archivo de ejemplo "launch.example.json"
