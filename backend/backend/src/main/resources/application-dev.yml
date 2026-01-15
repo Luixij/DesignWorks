@@ -4,9 +4,15 @@ spring:
     username: ${DB_USER}
     password: ${DB_PASS}
     driver-class-name: org.mariadb.jdbc.Driver
+
   jpa:
     hibernate:
       ddl-auto: update
+
+  security:
+    user:
+      name: admin
+      password: d.MCmq2des
 
 server:
   port: 8080
