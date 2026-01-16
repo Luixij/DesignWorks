@@ -108,10 +108,10 @@ CREATE INDEX idx_coment_trabajo_fecha ON comentarios(trabajo_id, fecha);
    ========================= */
 CREATE TABLE requisitos (
   id          BIGINT AUTO_INCREMENT PRIMARY KEY,
-  trabajo_id  INT NOT NULL,
+  trabajo_id  BIGINT NOT NULL,
   descripcion TEXT NOT NULL,
   adjunto_url VARCHAR(255) NULL,
-
+  
   CONSTRAINT fk_req_trabajo
     FOREIGN KEY (trabajo_id) REFERENCES trabajos(id)
     ON DELETE CASCADE ON UPDATE CASCADE
