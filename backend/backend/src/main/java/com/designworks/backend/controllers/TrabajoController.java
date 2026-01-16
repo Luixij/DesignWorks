@@ -2,6 +2,7 @@ package com.designworks.backend.controllers;
 
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,21 +27,31 @@ public class TrabajoController {
         this.trabajoService = trabajoService;
     }
 
+        // POST /trabajos → solo ADMIN
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public TrabajoDetailResponse crear(@RequestBody TrabajoCreateRequest req) {
         return trabajoService.crearTrabajo(req);
     }
 
+    
+    // GET /trabajos/mis → ADMIN o DISEÑADOR
+    @PreAuthorize("hasAnyRole('ADMIN','DISENADOR')")
     @GetMapping("/mis")
     public List<TrabajoListItemResponse> mis() {
         return trabajoService.listarMisTrabajos();
     }
 
+    // GET /trabajos/{id} → ADMIN o si participa
+    @PreAuthorize("hasRole('ADMIN') or @trabajoAuthz.esParticipante(#id)")
     @GetMapping("/{id}")
     public TrabajoDetailResponse detalle(@PathVariable Long id) {
         return trabajoService.detalleTrabajo(id);
     }
 
+    
+    // PUT /trabajos/{id}/estado → ADMIN o si participa
+    @PreAuthorize("hasRole('ADMIN') or @trabajoAuthz.esParticipante(#id)")
     @PutMapping("/{id}/estado")
     public void cambiarEstado(@PathVariable Long id, @RequestBody CambiarEstadoRequest req) {
         trabajoService.cambiarEstado(id, req);
