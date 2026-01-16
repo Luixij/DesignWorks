@@ -14,6 +14,12 @@ spring:
       name: admin
       password: d.MCmq2des
 
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+
 server:
   port: 8080
 
