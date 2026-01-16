@@ -2,6 +2,7 @@ package com.designworks.backend.controllers;
 
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.designworks.backend.dto.response.HistorialEstadoResponse;
 import com.designworks.backend.services.HistorialService;
+
 
 @RestController
 @RequestMapping("/trabajos/{trabajoId}/historial")
@@ -20,6 +22,8 @@ public class HistorialController {
         this.historialService = historialService;
     }
 
+    // GET historial → ADMIN o si participa
+    @PreAuthorize("hasRole('ADMIN') or @trabajoAuthz.esParticipante(#trabajoId)")
     @GetMapping
     public List<HistorialEstadoResponse> listar(@PathVariable Long trabajoId) {
         return historialService.listarHistorial(trabajoId);
