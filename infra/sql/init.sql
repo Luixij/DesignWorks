@@ -66,7 +66,7 @@ CREATE INDEX idx_trabajos_fechainicio ON trabajos(fecha_inicio);
 CREATE TABLE trabajo_participantes (
   trabajo_id      BIGINT NOT NULL,
   usuario_id      BIGINT NOT NULL,
-  rol_en_trabajo  VARCHAR(50) NOT NULL, 
+  rol_en_trabajo ENUM('ADMIN','DISENADOR') NOT NULL DEFAULT 'DISENADOR', 
 
   PRIMARY KEY (trabajo_id, usuario_id),
 
@@ -111,7 +111,7 @@ CREATE TABLE requisitos (
   trabajo_id  BIGINT NOT NULL,
   descripcion TEXT NOT NULL,
   adjunto_url VARCHAR(255) NULL,
-  
+
   CONSTRAINT fk_req_trabajo
     FOREIGN KEY (trabajo_id) REFERENCES trabajos(id)
     ON DELETE CASCADE ON UPDATE CASCADE
@@ -142,6 +142,33 @@ CREATE TABLE historial_estados (
 
 CREATE INDEX idx_hist_trabajo_fecha ON historial_estados(trabajo_id, fecha);
 CREATE INDEX idx_hist_estado ON historial_estados(estado);
+
+-- TRIGGER PARA CONVERTIR ROLES EN ADMIN O DISEÑADORES
+DELIMITER //
+
+CREATE TRIGGER bi_trabajo_participantes_rol
+BEFORE INSERT ON trabajo_participantes
+FOR EACH ROW
+BEGIN
+  IF NEW.rol_en_trabajo IS NULL OR UPPER(TRIM(NEW.rol_en_trabajo)) <> 'ADMIN' THEN
+    SET NEW.rol_en_trabajo = 'DISENADOR';
+  ELSE
+    SET NEW.rol_en_trabajo = 'ADMIN';
+  END IF;
+END//
+
+CREATE TRIGGER bu_trabajo_participantes_rol
+BEFORE UPDATE ON trabajo_participantes
+FOR EACH ROW
+BEGIN
+  IF NEW.rol_en_trabajo IS NULL OR UPPER(TRIM(NEW.rol_en_trabajo)) <> 'ADMIN' THEN
+    SET NEW.rol_en_trabajo = 'DISENADOR';
+  ELSE
+    SET NEW.rol_en_trabajo = 'ADMIN';
+  END IF;
+END//
+
+DELIMITER ;
 
 
 /* =========================================================
@@ -178,17 +205,17 @@ INSERT INTO trabajos (titulo, cliente, prioridad, fecha_inicio, fecha_fin, estad
 
 -- Participantes
 INSERT INTO trabajo_participantes (trabajo_id, usuario_id, rol_en_trabajo) VALUES
-(1, 2, 'diseñador principal'),
-(1, 3, 'ilustrador'),
-(1, 5, 'apoyo'),
-(2, 2, 'diseñador principal'),
-(2, 4, 'maquetador'),
-(3, 4, 'maquetador'),
-(3, 5, 'apoyo'),
-(4, 3, 'ilustrador'),
-(4, 2, 'apoyo'),
-(5, 2, 'diseñador principal'),
-(6, 5, 'diseñador principal');
+(1, 2, 'DISENADOR'),
+(1, 3, 'DISENADOR'),
+(1, 5, 'DISENADOR'),
+(2, 2, 'DISENADOR'),
+(2, 4, 'DISENADOR'),
+(3, 4, 'DISENADOR'),
+(3, 5, 'DISENADOR'),
+(4, 3, 'DISENADOR'),
+(4, 2, 'DISENADOR'),
+(5, 2, 'DISENADOR'),
+(6, 5, 'DISENADOR');
 
 -- Requisitos (briefs)
 INSERT INTO requisitos (trabajo_id, descripcion, adjunto_url) VALUES
