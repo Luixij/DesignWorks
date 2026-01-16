@@ -22,7 +22,7 @@ SET FOREIGN_KEY_CHECKS = 1;
    TABLA: USUARIOS
    ========================= */
 CREATE TABLE usuarios (
-  id                INT AUTO_INCREMENT PRIMARY KEY,
+  id                BIGINT AUTO_INCREMENT PRIMARY KEY,
   nombre            VARCHAR(100) NOT NULL,
   email             VARCHAR(150) NOT NULL UNIQUE,
   rol               VARCHAR(20)  NOT NULL,      
@@ -36,7 +36,7 @@ CREATE TABLE usuarios (
    TABLA: TRABAJOS
    ========================= */
 CREATE TABLE trabajos (
-  id            INT AUTO_INCREMENT PRIMARY KEY,
+  id            BIGINT  AUTO_INCREMENT PRIMARY KEY,
   titulo        VARCHAR(100) NOT NULL,
   cliente       VARCHAR(150) NOT NULL,
   prioridad     ENUM('baja','media','alta','urgente') NOT NULL DEFAULT 'media',
@@ -45,10 +45,10 @@ CREATE TABLE trabajos (
   estado_actual ENUM('CREADO','EN_PROGRESO','EN_REVISION','ENTREGADO','CANCELADO')
                NOT NULL DEFAULT 'CREADO',
   descripcion   TEXT NOT NULL,
-  creado_por    INT NOT NULL,
+  creado_por_id BIGINT NOT NULL,
 
   CONSTRAINT fk_trabajos_creado_por
-    FOREIGN KEY (creado_por) REFERENCES usuarios(id)
+    FOREIGN KEY (creado_por_id) REFERENCES usuarios(id)
     ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -64,8 +64,8 @@ CREATE INDEX idx_trabajos_fechainicio ON trabajos(fecha_inicio);
    Relación N:M (PK compuesta)
    ========================= */
 CREATE TABLE trabajo_participantes (
-  trabajo_id      INT NOT NULL,
-  usuario_id      INT NOT NULL,
+  trabajo_id      BIGINT NOT NULL,
+  usuario_id      BIGINT NOT NULL,
   rol_en_trabajo  VARCHAR(50) NOT NULL, 
 
   PRIMARY KEY (trabajo_id, usuario_id),
@@ -85,9 +85,9 @@ CREATE INDEX idx_tp_usuario ON trabajo_participantes(usuario_id);
    TABLA: COMENTARIOS
    ========================= */
 CREATE TABLE comentarios (
-  id          INT AUTO_INCREMENT PRIMARY KEY,
-  trabajo_id  INT NOT NULL,
-  usuario_id  INT NOT NULL,
+  id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+  trabajo_id  BIGINT NOT NULL,
+  usuario_id  BIGINT NOT NULL,
   fecha       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   texto       TEXT NOT NULL,
 
@@ -107,7 +107,7 @@ CREATE INDEX idx_coment_trabajo_fecha ON comentarios(trabajo_id, fecha);
    (descripcion, adjunto_url, trabajo_id)
    ========================= */
 CREATE TABLE requisitos (
-  id          INT AUTO_INCREMENT PRIMARY KEY,
+  id          BIGINT AUTO_INCREMENT PRIMARY KEY,
   trabajo_id  INT NOT NULL,
   descripcion TEXT NOT NULL,
   adjunto_url VARCHAR(255) NULL,
@@ -124,11 +124,11 @@ CREATE INDEX idx_req_trabajo ON requisitos(trabajo_id);
    Registra trazabilidad de cambios de estado
    ========================= */
 CREATE TABLE historial_estados (
-  id          INT AUTO_INCREMENT PRIMARY KEY,
-  trabajo_id  INT NOT NULL,
+  id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+  trabajo_id  BIGINT NOT NULL,
   estado      ENUM('CREADO','EN_PROGRESO','EN_REVISION','ENTREGADO','CANCELADO') NOT NULL,
   fecha       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  usuario_id  INT NOT NULL,
+  usuario_id  BIGINT NOT NULL,
   motivo      TEXT NULL,
 
   CONSTRAINT fk_hist_trabajo
@@ -162,7 +162,7 @@ INSERT INTO usuarios (nombre, email, rol, contrasena_hash, activo) VALUES
 
 /* Insertamos trabajos */
 
-INSERT INTO trabajos (titulo, cliente, prioridad, fecha_inicio, fecha_fin, estado_actual, descripcion, creado_por) VALUES
+INSERT INTO trabajos (titulo, cliente, prioridad, fecha_inicio, fecha_fin, estado_actual, descripcion, creado_por_id) VALUES
 ('Identidad corporativa - Cafetería Nómada', 'Cafetería Nómada', 'urgente', NOW() - INTERVAL 10 DAY, NOW() + INTERVAL 5 DAY, 'EN_PROGRESO',
  'Diseño de logotipo, paleta y aplicaciones básicas para cafetería.', 1),
 ('Cartelería evento - Festival Estella', 'Ayto. Estella', 'alta', NOW() - INTERVAL 20 DAY, NOW() + INTERVAL 2 DAY, 'EN_REVISION',
