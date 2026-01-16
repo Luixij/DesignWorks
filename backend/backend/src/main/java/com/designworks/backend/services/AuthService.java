@@ -3,7 +3,6 @@ package com.designworks.backend.services;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.designworks.backend.dto.LoginRequest;
@@ -20,17 +19,16 @@ public class AuthService {
     private final JwtService jwtService;
 
     public AuthService(AuthenticationManager authenticationManager,
-                       UsuarioRepository usuarioRepository,
-                       JwtService jwtService) {
+            UsuarioRepository usuarioRepository,
+            JwtService jwtService) {
         this.authenticationManager = authenticationManager;
         this.usuarioRepository = usuarioRepository;
         this.jwtService = jwtService;
     }
 
     public LoginResponse login(LoginRequest req) {
-        Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(req.email(), req.password())
-        );
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(req.email(), req.password()));
 
         // Si autentica, buscamos usuario para sacar id y rol
         Usuario u = usuarioRepository.findByEmail(req.email())
