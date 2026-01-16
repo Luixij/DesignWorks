@@ -12,4 +12,6 @@ public interface TrabajoParticipanteRepository extends JpaRepository<TrabajoPart
     List<TrabajoParticipante> findByUsuario_Id(Long usuarioId);
 
     boolean existsByTrabajo_IdAndUsuario_Id(Long trabajoId, Long usuarioId);
+
+    List<TrabajoParticipante> findByTrabajo_Id(Long trabajoId);
 }
