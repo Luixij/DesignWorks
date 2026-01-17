@@ -62,3 +62,14 @@ No he subido a git, he subido el archivo de ejemplo "launch.example.json"
 en /backend
 
 -----------------------------------------------------
+
+GIT - SINCRONIZAR REPOSITORIO CENTRAL CON LOCALES EN Mac Y Windows
+
+Subir cambios al repo CENTRAL
+git push origin main
+
+Traer cambios del repo CENTRAL
+git pull --ff-only origin main
+
+Ver últimos cambios
+git log --oneline --max-count=5
