@@ -1,0 +1,274 @@
+-----------------------------------------------------
+
+PETICIONES POSTMAN
+
+TENER EN CUENTA EL PUERTO - MAC: 8080 / WINDOWS 8082
+
+----------
+----------
+
+1. AuthController
+
+Login
+POST http://localhost:8082/auth/login
+Content-Type: application/json
+
+Body:
+{
+  "email": "admin@designworks.com",
+  "password": "Admin1234!"
+}
+
+Respuesta esperada:
+{
+  "token": "eyJhbGciOiJIUzI1NiJ9...",
+  "email": "admin@designworks.com",
+  "rol": "ADMIN"
+}
+
+----------
+----------
+
+2. TrabajoController
+
+POST - Crear Trabajo (Solo ADMIN) con Participantes y Requisitos
+POST http://localhost:8082/trabajos
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+Body:
+{
+  "titulo": "PREUBAAA Diseño logo",
+  "cliente": "Empresa X",
+  "descripcion": "Nuevo logo corporativo",
+  "prioridad": "ALTA",
+  "fechaFin": "2026-02-01",
+  "participantes": [
+    {
+      "usuarioId": 2,
+      "rolEnTrabajo": "DISENADOR"
+    }
+  ],
+  "requisitos": [
+    {
+      "descripcion": "Entregar en SVG",
+      "adjuntoUrl": null
+    }
+  ]
+}
+
+----------
+
+GET - Listar Mis Trabajos (ADMIN o DISEÑADOR)
+GET http://localhost:8082/trabajos/mis
+Authorization: Bearer {{token}}
+
+Sin body
+[
+  {
+    "id": 1,
+    "titulo": "Identidad corporativa - Cafetería Nómada",
+    "cliente": "Cafetería Nómada",
+    "prioridad": "URGENTE",
+    "estadoActual": "EN_PROGRESO",
+    "fechaFin": "2026-01-22"
+  }
+]
+
+----------
+
+GET - Detalle de Trabajo (ADMIN o si participa)
+GET http://localhost:8082/trabajos/1
+Authorization: Bearer {{token}}
+
+Sin body
+
+Respuesta esperada:
+json{
+  "id": 1,
+  "titulo": "Identidad corporativa - Cafetería Nómada",
+  "cliente": "Cafetería Nómada",
+  "prioridad": "URGENTE",
+  "estadoActual": "EN_PROGRESO",
+  "descripcion": "Diseño de logotipo, paleta y aplicaciones básicas",
+  "fechaInicio": "2026-01-07",
+  "fechaFin": "2026-01-22",
+  "creadoPor": {
+    "id": 1,
+    "nombre": "Luis Admin",
+    "email": "admin@designworks.com"
+  },
+  "participantes": [...],
+  "requisitos": [...],
+  "comentarios": [...],
+  "historial": [...]
+}
+
+----------
+
+PUT - Cambiar Estado de Trabajo (ADMIN o si participa)
+PUT http://localhost:8082/trabajos/1/estado
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+Body:
+json{
+  "nuevoEstado": "EN_REVISION",
+  "motivo": "Completada primera versión, enviado al cliente para revisión"
+}
+
+Estados válidos:
+
+CREADO
+EN_PROGRESO
+EN_REVISION
+ENTREGADO
+CANCELADO
+
+Transiciones permitidas:
+
+CREADO → EN_PROGRESO o CANCELADO
+EN_PROGRESO → EN_REVISION o CANCELADO
+EN_REVISION → EN_PROGRESO o ENTREGADO
+
+----------
+----------
+
+3. ComentarioController
+POST - Crear Comentario (ADMIN o si participa)
+
+POST http://localhost:8082/trabajos/1/comentarios
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+Body:
+json{
+  "texto": "He subido la primera propuesta de logo. Revisar carpeta compartida."
+}
+
+----------
+
+GET - Listar Comentarios (ADMIN o si participa)
+GET http://localhost:8082/trabajos/1/comentarios
+Authorization: Bearer {{token}}
+
+Sin body
+Respuesta esperada:
+json[
+  {
+    "id": 1,
+    "trabajoId": 1,
+    "usuario": {
+      "id": 2,
+      "nombre": "Marta Diseño",
+      "email": "marta@designworks.com"
+    },
+    "fecha": "2026-01-09T11:00:00",
+    "texto": "He preparado 3 rutas: tipográfica, isotipo y combo."
+  }
+]
+
+----------
+----------
+
+ 4. RequisitoController
+
+POST - Agregar Requisito (Solo ADMIN)
+POST http://localhost:8082/trabajos/1/requisitos
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+Body:
+json{
+  "descripcion": "Aplicación del logo en tarjetas de presentación",
+  "adjuntoUrl": "https://example.com/medidas-tarjeta.pdf"
+}
+
+----------
+
+GET - Listar Requisitos (ADMIN o si participa)
+httpGET http://localhost:8082/trabajos/1/requisitos
+Authorization: Bearer {{token}}
+
+Sin body
+Respuesta esperada:
+json[
+  {
+    "id": 1,
+    "trabajoId": 1,
+    "descripcion": "Logotipo principal + versión monocroma + favicon.",
+    "adjuntoUrl": null
+  },
+  {
+    "id": 2,
+    "trabajoId": 1,
+    "descripcion": "Aplicación en vaso, bolsa y tarjeta.",
+    "adjuntoUrl": null
+  }
+]
+
+----------
+----------
+
+5. HistorialController
+
+GET - Listar Historial de Estados (ADMIN o si participa)
+GET http://localhost:8082/trabajos/1/historial
+Authorization: Bearer {{token}}
+
+Sin body
+Respuesta esperada:
+json[
+  {
+    "id": 1,
+    "trabajoId": 1,
+    "estado": "CREADO",
+    "fecha": "2026-01-07T09:00:00",
+    "usuario": {
+      "id": 1,
+      "nombre": "Luis Admin",
+      "email": "admin@designworks.com"
+    },
+    "motivo": "Trabajo creado y listo para asignación."
+  },
+  {
+    "id": 2,
+    "trabajoId": 1,
+    "estado": "EN_PROGRESO",
+    "fecha": "2026-01-08T10:30:00",
+    "usuario": {
+      "id": 2,
+      "nombre": "Marta Diseño",
+      "email": "marta@designworks.com"
+    },
+    "motivo": "Comenzamos bocetos y exploración de logo."
+  }
+]
+
+🔑 Valores de Prioridad
+Para el campo prioridad en trabajos:
+
+BAJA
+MEDIA
+ALTA
+URGENTE
+
+----------
+
+Login con otros usuarios
+
+Login como Diseñador
+httpPOST http://localhost:8082/auth/login
+Content-Type: application/json
+
+Body:
+json{
+  "email": "marta@designworks.com",
+  "password": "Design1234!"
+}
+
+Otros diseñadores disponibles:
+
+carlos@designworks.com - Design1234!
+ana@designworks.com - Design1234!
+javi@designworks.com - Design1234!
