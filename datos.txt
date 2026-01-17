@@ -52,6 +52,7 @@ PARA INICIAR SPRING BOOT
 ESTO FUNCIONA DESDE EL TERMINAL DE VISUAL STUDIO CODE EN LA CARPETA backend/backend
  mvn "-Dspring-boot.run.profiles=local" spring-boot:run
 
+EN WINDOWS IMPORTANTE TENER EN CUENTA QUE USO EL PUERTO 8082 Y EN MAC EL 8080
  ABRIR SPRING BOOT EN localhost: http://localhost:8082/
     name: admin
     password: d.MCmq2des
