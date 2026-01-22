@@ -74,3 +74,12 @@ git pull --ff-only origin main
 
 Ver últimos cambios
 git log --oneline --max-count=5
+
+
+-----------------------------------------------------
+
+FLUTTER
+
+Importante tener en cuenta que en mac se usa el puerto 8080 y en windows 8082
+
+flutter run --no-enable-impeller --dart-define=API_BASE_URL=http://10.0.2.2:8080
