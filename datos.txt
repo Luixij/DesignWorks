@@ -80,6 +80,14 @@ git log --oneline --max-count=5
 
 FLUTTER
 
-Importante tener en cuenta que en mac se usa el puerto 8080 y en windows 8082
+Ejecuta la aplicación con una URL base personalizada para la API y con Impeller desactivado:
 
 flutter run --no-enable-impeller --dart-define=API_BASE_URL=http://10.0.2.2:8080
+
+Notas:
+- 10.0.2.2 se utiliza para acceder al localhost de la máquina anfitriona desde el emulador de Android.
+- En macOS el backend se ejecuta en el puerto 8080.
+- En Windows el backend se ejecuta en el puerto 8082.
+- La variable API_BASE_URL se lee dentro de la aplicación usando:
+  String.fromEnvironment('API_BASE_URL')
+- Impeller se desactiva para una mejor compatibilidad y estabilidad en algunos dispositivos y emuladores.
