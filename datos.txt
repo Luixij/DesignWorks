@@ -91,3 +91,11 @@ Notas:
 - La variable API_BASE_URL se lee dentro de la aplicación usando:
   String.fromEnvironment('API_BASE_URL')
 - Impeller se desactiva para una mejor compatibilidad y estabilidad en algunos dispositivos y emuladores.
+
+
+PROBAR UNA APL RELEASE CON IP DE WINDOWS
+flutter build apk --release --dart-define=API_BASE_URL=http://192.168.0.17:8082
+
+Luego la APK queda en:
+
+build\app\outputs\flutter-apk\app-release.apk
