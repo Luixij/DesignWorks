@@ -1,6 +1,6 @@
 class AppConfig {
   static const apiBaseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'http://10.0.2.2:8080', // Android emulator -> localhost de mi PC
+    defaultValue: 'http://10.0.2.2:8082', // Android emulator -> localhost de mi PC
   );
 }
