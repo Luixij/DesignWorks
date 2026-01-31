@@ -1,0 +1,7 @@
+CONECTAR MÓVIL DE FORMA REMOTA
+Activar depuración por usb inalámbrica - seleccionar vincular código y ejecutar el siguiente comando.
+Averiguar la ip y el puerto que habilita el móvil junto al código que da
+
+adb pair 192.168.0.28:35453
+Enter pairing code: 726720
+Successfully paired to 192.168.0.28:35453 [guid=adb-RZGYB16DQTA-IVfjnY]
