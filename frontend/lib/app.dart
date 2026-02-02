@@ -9,9 +9,6 @@ import 'features/home/presentation/home_screen.dart';
 import 'features/perfil/presentation/perfil_screen.dart';
 import 'features/trabajos/presentation/trabajos_list_screen.dart';
 import 'features/trabajos/presentation/trabajo_detail_screen.dart';
-import 'features/trabajos/presentation/trabajo_historial_screen.dart';
-import 'features/trabajos/presentation/trabajo_cambiar_estado_dialog.dart';
-import 'features/trabajos/presentation/trabajo_nuevo_comentario_dialog.dart';
 
 class App extends ConsumerStatefulWidget {
   const App({super.key});
@@ -66,30 +63,6 @@ class _AppState extends ConsumerState<App> {
                     final id = int.parse(state.pathParameters['id']!);
                     return TrabajoDetailScreen(trabajoId: id);
                   },
-                  routes: [
-                    // Popups como en wireframes (dialogs)
-                    GoRoute(
-                      path: 'historial',
-                      pageBuilder: (context, state) {
-                        final id = int.parse(state.pathParameters['id']!);
-                        return DialogPage(child: TrabajoHistorialScreen(trabajoId: id));
-                      },
-                    ),
-                    GoRoute(
-                      path: 'estado',
-                      pageBuilder: (context, state) {
-                        final id = int.parse(state.pathParameters['id']!);
-                        return DialogPage(child: TrabajoCambiarEstadoDialog(trabajoId: id));
-                      },
-                    ),
-                    GoRoute(
-                      path: 'comentarios/nuevo',
-                      pageBuilder: (context, state) {
-                        final id = int.parse(state.pathParameters['id']!);
-                        return DialogPage(child: TrabajoNuevoComentarioDialog(trabajoId: id));
-                      },
-                    ),
-                  ],
                 ),
               ],
             ),
@@ -113,20 +86,6 @@ class _AppState extends ConsumerState<App> {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routerConfig: _router,
-    );
-  }
-}
-
-/// Página tipo diálogo (para popups estilo wireframe)
-class DialogPage extends Page<void> {
-  final Widget child;
-  const DialogPage({required this.child});
-
-  @override
-  Route<void> createRoute(BuildContext context) {
-    return DialogRoute(
-      context: context,
-      builder: (_) => child,
     );
   }
 }
