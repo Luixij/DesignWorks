@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'trabajo_cambiar_estado_dialog.dart';
+import 'trabajo_historial_screen.dart';
+import 'trabajo_nuevo_comentario_dialog.dart';
 
 class TrabajoDetailScreen extends StatelessWidget {
   final int trabajoId;
@@ -20,14 +22,24 @@ class TrabajoDetailScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () => context.go('/trabajos/$trabajoId/estado'),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => TrabajoCambiarEstadoDialog(trabajoId: trabajoId),
+                      );
+                    },
                     child: const Text('Cambiar estado'),
                   ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: OutlinedButton(
-                    onPressed: () => context.go('/trabajos/$trabajoId/historial'),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => TrabajoHistorialScreen(trabajoId: trabajoId),
+                      );
+                    },
                     child: const Text('Ver historial'),
                   ),
                 ),
@@ -45,7 +57,12 @@ class TrabajoDetailScreen extends StatelessWidget {
             Align(
               alignment: Alignment.centerRight,
               child: FloatingActionButton(
-                onPressed: () => context.go('/trabajos/$trabajoId/comentarios/nuevo'),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => TrabajoNuevoComentarioDialog(trabajoId: trabajoId),
+                  );
+                },
                 child: const Icon(Icons.add),
               ),
             ),
