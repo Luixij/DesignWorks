@@ -49,16 +49,17 @@ public class TrabajoController {
     }
 
     // GET /trabajos/{id} → ADMIN o si participa
-    @PreAuthorize("hasRole('ADMIN') or @trabajoAuthz.esParticipante(#id)")
+    @PreAuthorize("(hasRole('ADMIN')) or (@trabajoAuthz.esParticipante(#id))")
     @GetMapping("/{id}")
     public TrabajoDetailResponse detalle(@PathVariable Long id) {
         return trabajoService.detalleTrabajo(id);
     }
 
     // PUT /trabajos/{id}/estado → ADMIN o si participa
-    @PreAuthorize("hasRole('ADMIN') or @trabajoAuthz.esParticipante(#id)")
+    @PreAuthorize("(hasRole('ADMIN')) or (@trabajoAuthz.esParticipante(#id))")
     @PutMapping("/{id}/estado")
     public void cambiarEstado(@PathVariable Long id, @RequestBody CambiarEstadoRequest req) {
         trabajoService.cambiarEstado(id, req);
     }
+
 }
