@@ -18,4 +18,10 @@ class SecureStore {
     await _storage.delete(key: _kToken);
     await _storage.delete(key: _kRole);
   }
+
+  Future<void> debugPrintSession() async {
+    final t = await getToken();
+    final r = await getRole();
+    print('STORE token null? ${t == null} | role=$r');
+  }
 }
