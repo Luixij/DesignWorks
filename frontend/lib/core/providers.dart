@@ -13,7 +13,7 @@ final goRouterProvider = StateProvider<GoRouter?>((ref) => null);
 
 // ApiClient
 final apiClientProvider = Provider<ApiClient>((ref) {
-  final router = ref.watch(goRouterProvider); // <- watch, no read
+  final router = ref.watch(goRouterProvider); // watch, no read
   final store = ref.read(secureStoreProvider);
 
   return ApiClient(
@@ -25,5 +25,8 @@ final apiClientProvider = Provider<ApiClient>((ref) {
 // Repos
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   final api = ref.read(apiClientProvider);
-  return AuthRepository(api);
+  final store = ref.read(secureStoreProvider);
+
+  // ✅ ahora AuthRepository necesita (api, store)
+  return AuthRepository(api, store);
 });
