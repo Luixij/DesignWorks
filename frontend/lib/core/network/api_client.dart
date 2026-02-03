@@ -20,16 +20,29 @@ class ApiClient {
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
         final token = await store.getToken();
-        if (token != null && token.isNotEmpty) {
-          options.headers['Authorization'] = 'Bearer $token';
+
+        // Normaliza token
+        if (token != null && token.trim().isNotEmpty) {
+          final t = token.startsWith('Bearer ') ? token.substring(7) : token;
+          options.headers['Authorization'] = 'Bearer $t';
         }
+
+        //  Log SIEMPRE
+        print('➡️ ${options.method} ${options.uri}');
+        print('🔐 Authorization: ${options.headers['Authorization'] ?? 'NULL'}');
+
         handler.next(options);
       },
       onError: (e, handler) async {
+        print('❌ ${e.response?.statusCode} ${e.requestOptions.method} ${e.requestOptions.uri}');
+        print('🧾 RESP: ${e.response?.data}');
+
+        //  Solo logout si ES realmente 401
         if (e.response?.statusCode == 401) {
-          await store.clear();       // RF2: token inválido/caducado -> limpiar sesión
-          onUnauthorized();          // volver a login
+          await store.clear();
+          onUnauthorized();
         }
+
         handler.next(e);
       },
     ));
