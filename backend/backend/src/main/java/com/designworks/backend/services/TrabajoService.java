@@ -132,6 +132,22 @@ public class TrabajoService {
     }
 
     // =========================
+    // LISTAR TODOS TRABAJOS - ROL ADMIN
+    // =========================
+    /**
+     * Lista todos los trabajos del sistema (solo para ADMIN)
+     * @return Lista de todos los trabajos en formato resumido
+     */
+    public List<TrabajoListItemResponse> listarTodos() {
+        return trabajoRepository.findAll()
+                .stream()
+                .map(TrabajoMapper::toListItem)
+                .toList();
+    }
+
+
+    
+    // =========================
     // 2) LISTAR MIS TRABAJOS
     // =========================
     public List<TrabajoListItemResponse> listarMisTrabajos() {
