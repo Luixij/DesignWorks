@@ -49,7 +49,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
       await store.saveSession(token: res.token, role: res.rol);
 
-      if (mounted) context.go('/trabajos');
+      if (mounted) context.go('/home');
     } catch (e) {
       setState(() {
         _error = 'Login falló: $e';
