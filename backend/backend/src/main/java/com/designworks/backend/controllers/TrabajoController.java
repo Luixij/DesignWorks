@@ -27,14 +27,20 @@ public class TrabajoController {
         this.trabajoService = trabajoService;
     }
 
-        // POST /trabajos → solo ADMIN
+    // POST /trabajos → solo ADMIN
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public TrabajoDetailResponse crear(@RequestBody TrabajoCreateRequest req) {
         return trabajoService.crearTrabajo(req);
     }
 
-    
+    // GET /trabajos → solo ADMIN (listar todos los trabajos)
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping
+    public List<TrabajoListItemResponse> listarTodos() {
+        return trabajoService.listarTodos();
+    }
+
     // GET /trabajos/mis → ADMIN o DISEÑADOR
     @PreAuthorize("hasAnyRole('ADMIN','DISENADOR')")
     @GetMapping("/mis")
@@ -49,7 +55,6 @@ public class TrabajoController {
         return trabajoService.detalleTrabajo(id);
     }
 
-    
     // PUT /trabajos/{id}/estado → ADMIN o si participa
     @PreAuthorize("hasRole('ADMIN') or @trabajoAuthz.esParticipante(#id)")
     @PutMapping("/{id}/estado")
