@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
+import '../../auth/data/auth_repository.dart';
+import '../../auth/data/login_request.dart';
 import '../../../core/providers.dart';
-import '../data/login_request.dart';
-import '../../../config/app_config.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -14,51 +13,36 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final _emailCtrl = TextEditingController();
-  final _passCtrl = TextEditingController();
-
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
   bool _loading = false;
   String? _error;
 
-  @override
-  void dispose() {
-    _emailCtrl.dispose();
-    _passCtrl.dispose();
-    super.dispose();
-  }
-
-  Future<void> _doLogin() async {
-    setState(() {
-      _error = null;
-    });
-
-    if (!_formKey.currentState!.validate()) return;
-
+  Future<void> _login() async {
     setState(() {
       _loading = true;
+      _error = null;
     });
 
     try {
       final authRepo = ref.read(authRepositoryProvider);
-      final store = ref.read(secureStoreProvider);
 
-      final res = await authRepo.login(
-        LoginRequest(email: _emailCtrl.text.trim(), password: _passCtrl.text),
+      await authRepo.login(
+        LoginRequest(
+          email: _emailController.text.trim(),
+          password: _passwordController.text,
+        ),
       );
 
-      await store.saveSession(token: res.token, role: res.rol);
-
-      if (mounted) context.go('/home');
+      if (!mounted) return;
+      context.go('/home');
     } catch (e) {
       setState(() {
-        _error = 'Login falló: $e';
+        _error = e.toString().replaceFirst('Exception: ', '');
       });
     } finally {
       if (mounted) {
-        setState(() {
-          _loading = false;
-        });
+        setState(() => _loading = false);
       }
     }
   }
@@ -66,50 +50,51 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Debug: muestra qué API está usando realmente la app (móvil vs emulador)
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'API: ${AppConfig.apiBaseUrl}',
-                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+              const Text(
+                'Iniciar sesión',
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 32),
+
+              TextField(
+                controller: _emailController,
+                decoration: const InputDecoration(
+                  labelText: 'Email',
+                  prefixIcon: Icon(Icons.email),
                 ),
               ),
-              const SizedBox(height: 8),
-
-              TextFormField(
-                controller: _emailCtrl,
-                decoration: const InputDecoration(labelText: 'Email'),
-                validator: (v) => (v == null || v.trim().isEmpty) ? 'Requerido' : null,
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _passCtrl,
-                decoration: const InputDecoration(labelText: 'Password'),
-                obscureText: true,
-                validator: (v) => (v == null || v.isEmpty) ? 'Requerido' : null,
-              ),
               const SizedBox(height: 16),
+
+              TextField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  labelText: 'Contraseña',
+                  prefixIcon: Icon(Icons.lock),
+                ),
+              ),
+              const SizedBox(height: 24),
+
               if (_error != null) ...[
-                Text(_error!, style: const TextStyle(color: Colors.red)),
-                const SizedBox(height: 8),
+                Text(
+                  _error!,
+                  style: const TextStyle(color: Colors.red),
+                ),
+                const SizedBox(height: 12),
               ],
+
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: _loading ? null : _doLogin,
+                  onPressed: _loading ? null : _login,
                   child: _loading
-                      ? const SizedBox(
-                    height: 18,
-                    width: 18,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
+                      ? const CircularProgressIndicator(color: Colors.white)
                       : const Text('Entrar'),
                 ),
               ),
