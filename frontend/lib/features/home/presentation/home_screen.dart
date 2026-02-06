@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../trabajos/application/trabajos_providers.dart';
+import '../../perfil/application/user_profile_provider.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -9,6 +10,7 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncStats = ref.watch(homeStatsProvider);
+    final asyncUser = ref.watch(currentUserProvider);
 
     return SafeArea(
       child: Padding(
@@ -33,7 +35,62 @@ class HomeScreen extends ConsumerWidget {
           data: (stats) => Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Hola, Luis', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              // Saludo dinámico con el nombre del usuario
+              asyncUser.when(
+                loading: () => const Text(
+                  'Hola',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                error: (_, __) => const Text(
+                  'Hola',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                data: (user) {
+                  if (user == null) {
+                    return const Text(
+                      'Hola',
+                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    );
+                  }
+
+                  // Obtener solo el primer nombre
+                  final primerNombre = user.nombre.split(' ').first;
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Hola, $primerNombre',
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          Icon(
+                            user.rol.toUpperCase() == 'ADMIN'
+                                ? Icons.admin_panel_settings
+                                : Icons.design_services,
+                            size: 16,
+                            color: user.colorAvatar,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            user.rolFormateado,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: user.colorAvatar,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  );
+                },
+              ),
               const SizedBox(height: 8),
               Text(
                 'Tienes ${stats.total} trabajo${stats.total != 1 ? 's' : ''} asignado${stats.total != 1 ? 's' : ''}',
@@ -75,19 +132,6 @@ class HomeScreen extends ConsumerWidget {
                 count: stats.cancelados,
                 icon: Icons.cancel_outlined,
                 color: Colors.red,
-              ),
-
-              const Spacer(),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: () => context.go('/trabajos'),
-                  icon: const Icon(Icons.list_alt),
-                  label: const Text('Ver todos los trabajos'),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                ),
               ),
             ],
           ),
