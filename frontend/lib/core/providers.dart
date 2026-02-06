@@ -27,6 +27,6 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
   final api = ref.read(apiClientProvider);
   final store = ref.read(secureStoreProvider);
 
-  // ✅ ahora AuthRepository necesita (api, store)
+  // ahora AuthRepository necesita (api, store)
   return AuthRepository(api, store);
 });
