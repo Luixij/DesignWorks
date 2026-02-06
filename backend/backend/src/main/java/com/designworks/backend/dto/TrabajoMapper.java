@@ -57,7 +57,7 @@ public class TrabajoMapper {
     public static UsuarioBasicResponse toUsuarioBasic(Usuario u) {
         if (u == null)
             return null;
-        return new UsuarioBasicResponse(u.getId(), u.getNombre(), u.getEmail());
+        return new UsuarioBasicResponse(u.getId(), u.getNombre(), u.getEmail(), u.getRol().name());
     }
 
     public static ParticipanteResponse toParticipante(TrabajoParticipante tp) {
