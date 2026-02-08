@@ -34,29 +34,31 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthFilter jwtAuthFilter) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
-            .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-            // Diferenciar 401 (no autenticado) vs 403 (sin permisos)
-            .exceptionHandling(eh -> eh
-                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-                .accessDeniedHandler((req, res, ex) -> res.setStatus(HttpServletResponse.SC_FORBIDDEN))
-            )
+                // Diferenciar 401 (no autenticado) vs 403 (sin permisos)
+                .exceptionHandling(eh -> eh
+                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+                        .accessDeniedHandler((req, res, ex) -> res.setStatus(HttpServletResponse.SC_FORBIDDEN)))
 
-            .authorizeHttpRequests(auth -> auth
-                // Público (login/registro)
-                .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                .requestMatchers("/auth/**").permitAll()
+                .authorizeHttpRequests(auth -> auth
+                        // Público
+                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        // si existe:
+                        // .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
 
-                // Admin
-                .requestMatchers("/admin/**").hasRole("ADMIN")
+                        // Protegido
+                        .requestMatchers(HttpMethod.GET, "/auth/me").authenticated()
 
-                // Resto protegido
-                .anyRequest().authenticated()
-            )
+                        // Admin
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
 
-            // JWT filter antes del UsernamePasswordAuthenticationFilter
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                        // Resto protegido
+                        .anyRequest().authenticated())
+
+                // JWT filter antes del UsernamePasswordAuthenticationFilter
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
