@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import '../application/trabajos_providers.dart';
 import '../data/models/enums.dart';
 import 'trabajo_cambiar_estado_dialog.dart';
@@ -15,199 +14,221 @@ class TrabajoDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncDetail = ref.watch(trabajoDetailProvider(trabajoId));
 
-    return asyncDetail.when(
-      loading: () => const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
       ),
-      error: (e, _) => Scaffold(
-        appBar: AppBar(title: const Text('Error')),
-        body: Center(child: Text('Error: $e')),
-      ),
-      data: (detail) => Scaffold(
-        appBar: AppBar(title: Text(detail.titulo)),
-        body: Padding(
-          padding: const EdgeInsets.all(16),
-          child: ListView(
+      body: asyncDetail.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (e, _) => Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Información del trabajo
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
+              const Icon(Icons.error_outline, size: 48, color: Colors.red),
+              const SizedBox(height: 16),
+              Text('Error: $e'),
+            ],
+          ),
+        ),
+        data: (detail) => SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Título y chip de estado
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
                         detail.titulo,
-                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Cliente: ${detail.cliente}',
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          Text(
-                            'Estado: ${_getEstadoLabel(detail.estadoActual)}',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: _getColorForEstado(detail.estadoActual),
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Text(
-                            'Prioridad: ${_getPrioridadLabel(detail.prioridad)}',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: _getColorForPrioridad(detail.prioridad),
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Inicio: ${_formatDate(detail.fechaInicio)}',
-                        style: const TextStyle(fontSize: 14, color: Colors.grey),
-                      ),
-                      if (detail.fechaFin != null)
-                        Text(
-                          'Fin: ${_formatDate(detail.fechaFin!)}',
-                          style: const TextStyle(fontSize: 14, color: Colors.grey),
+                        style: const TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          height: 1.2,
                         ),
-                      if (detail.descripcion.isNotEmpty) ...[
-                        const SizedBox(height: 12),
-                        const Text(
-                          'Descripción:',
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(detail.descripcion),
-                      ],
-                      if (detail.participantes.isNotEmpty) ...[
-                        const SizedBox(height: 12),
-                        const Text(
-                          'Participantes:',
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                        const SizedBox(height: 4),
-                        ...detail.participantes.map((p) => Padding(
-                          padding: const EdgeInsets.only(bottom: 4),
-                          child: Text('• ${p.nombre} (${p.email}) - ${p.rolEnTrabajo.name}'),
-                        )),
-                      ],
-                      if (detail.requisitos.isNotEmpty) ...[
-                        const SizedBox(height: 12),
-                        const Text(
-                          'Requisitos:',
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                        const SizedBox(height: 4),
-                        ...detail.requisitos.map((r) => Padding(
-                          padding: const EdgeInsets.only(bottom: 4),
-                          child: Text('• ${r.descripcion}'),
-                        )),
-                      ],
-                    ],
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    _buildEstadoChip(detail.estadoActual),
+                  ],
+                ),
+                const SizedBox(height: 8),
+
+                // Subtítulo (categoría del trabajo)
+                Text(
+                  detail.descripcion.split('.').first,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey.shade700,
                   ),
                 ),
-              ),
-              const SizedBox(height: 12),
+                const SizedBox(height: 24),
 
-              // Botones de acción
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => TrabajoCambiarEstadoDialog(trabajoId: trabajoId),
-                        );
-                      },
-                      child: const Text('Cambiar estado'),
-                    ),
+                // Equipo
+                const Text(
+                  'Equipo',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey,
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => TrabajoHistorialScreen(trabajoId: trabajoId),
-                        );
-                      },
-                      child: const Text('Ver historial'),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 8),
+                _buildEquipoSection(detail.participantes),
+                const SizedBox(height: 24),
 
-              const SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Comentarios',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    '(${detail.comentarios.length})',
-                    style: const TextStyle(fontSize: 16, color: Colors.grey),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-
-              // Lista de comentarios REAL
-              if (detail.comentarios.isEmpty)
-                const Card(
-                  child: Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Center(
-                      child: Text(
-                        'No hay comentarios todavía',
-                        style: TextStyle(color: Colors.grey),
+                // Botones de acción
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => TrabajoCambiarEstadoDialog(
+                              trabajoId: trabajoId,
+                            ),
+                          );
+                        },
+                        style: OutlinedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          side: BorderSide(color: Colors.cyan.shade300),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: Text(
+                          'Cambiar estado',
+                          style: TextStyle(color: Colors.cyan.shade700),
+                        ),
                       ),
                     ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => TrabajoHistorialScreen(
+                              trabajoId: trabajoId,
+                            ),
+                          );
+                        },
+                        style: OutlinedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          side: BorderSide(color: Colors.amber.shade300),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: Text(
+                          'Ver historial',
+                          style: TextStyle(color: Colors.amber.shade800),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+
+                // Imagen del proyecto (placeholder)
+                Container(
+                  width: double.infinity,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(12),
+                    image: const DecorationImage(
+                      image: NetworkImage(
+                        'https://via.placeholder.com/400x200',
+                      ),
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                )
-              else
-                ...detail.comentarios.map((comentario) => Card(
-                  margin: const EdgeInsets.only(bottom: 8),
+                ),
+                const SizedBox(height: 24),
+
+                // Card de Descripción
+                Card(
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   child: Padding(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        const Text(
+                          'Descripción',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          detail.descripcion,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey.shade700,
+                            height: 1.5,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        const Divider(),
+                        const SizedBox(height: 12),
+                        // Cliente y Fecha
                         Row(
                           children: [
-                            CircleAvatar(
-                              backgroundColor: Colors.blue,
-                              child: Text(
-                                comentario.usuario.nombre.substring(0, 1).toUpperCase(),
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                            ),
-                            const SizedBox(width: 12),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    comentario.usuario.nombre,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15,
+                                  const Text(
+                                    'Cliente',
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
+                                  const SizedBox(height: 4),
                                   Text(
-                                    _formatDateTime(comentario.fecha),
+                                    detail.cliente,
                                     style: const TextStyle(
-                                      fontSize: 12,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Fecha inicio',
+                                    style: TextStyle(
+                                      fontSize: 13,
                                       color: Colors.grey,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    _formatFecha(detail.fechaInicio),
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500,
                                     ),
                                   ),
                                 ],
@@ -215,94 +236,287 @@ class TrabajoDetailScreen extends ConsumerWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 8),
-                        Text(comentario.texto),
                       ],
                     ),
                   ),
-                )),
-
-              const SizedBox(height: 12),
-              Align(
-                alignment: Alignment.centerRight,
-                child: FloatingActionButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => TrabajoNuevoComentarioDialog(trabajoId: trabajoId),
-                    );
-                  },
-                  child: const Icon(Icons.add),
                 ),
-              ),
-            ],
+                const SizedBox(height: 24),
+
+                // Requisitos
+                const Text(
+                  'Requisitos',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                if (detail.requisitos.isEmpty)
+                  Text(
+                    'No hay requisitos definidos',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey.shade600,
+                    ),
+                  )
+                else
+                  ...detail.requisitos.map(
+                        (requisito) => Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '• ',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey.shade800,
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              requisito.descripcion,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey.shade800,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                const SizedBox(height: 24),
+
+                // Comentarios
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Comentarios',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.add),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => TrabajoNuevoComentarioDialog(
+                            trabajoId: trabajoId,
+                          ),
+                        );
+                      },
+                      style: IconButton.styleFrom(
+                        backgroundColor: Colors.grey.shade200,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+
+                // Lista de comentarios
+                if (detail.comentarios.isEmpty)
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: Text(
+                        'No hay comentarios todavía',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey.shade600,
+                        ),
+                      ),
+                    ),
+                  )
+                else
+                  ...detail.comentarios.map(
+                        (comentario) => Card(
+                      margin: const EdgeInsets.only(bottom: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              comentario.texto,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                height: 1.5,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            const Divider(),
+                            const SizedBox(height: 8),
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.calendar_today,
+                                  size: 14,
+                                  color: Colors.grey.shade600,
+                                ),
+                                const SizedBox(width: 6),
+                                Text(
+                                  _formatFechaComentario(comentario.fecha),
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.grey.shade600,
+                                  ),
+                                ),
+                                const Spacer(),
+                                Text(
+                                  comentario.usuario.nombre,
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                const SizedBox(height: 24),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  String _getEstadoLabel(EstadoTrabajo estado) {
+  Widget _buildEstadoChip(EstadoTrabajo estado) {
+    Color color;
+    String label;
+
     switch (estado) {
       case EstadoTrabajo.CREADO:
-        return 'Creado';
+        color = Colors.blue;
+        label = 'Creado';
+        break;
       case EstadoTrabajo.EN_PROGRESO:
-        return 'En Progreso';
+        color = Colors.green;
+        label = 'En progreso';
+        break;
       case EstadoTrabajo.EN_REVISION:
-        return 'En Revisión';
+        color = Colors.orange;
+        label = 'En revisión';
+        break;
       case EstadoTrabajo.ENTREGADO:
-        return 'Entregado';
+        color = Colors.blue.shade700;
+        label = 'Entregado';
+        break;
       case EstadoTrabajo.CANCELADO:
-        return 'Cancelado';
+        color = Colors.red;
+        label = 'Cancelado';
+        break;
     }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.15),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          fontSize: 14,
+          color: color,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
   }
 
-  String _getPrioridadLabel(Prioridad prioridad) {
-    switch (prioridad) {
-      case Prioridad.BAJA:
-        return 'Baja';
-      case Prioridad.MEDIA:
-        return 'Media';
-      case Prioridad.ALTA:
-        return 'Alta';
-      case Prioridad.URGENTE:
-        return 'Urgente';
+  Widget _buildEquipoSection(List<dynamic> participantes) {
+    if (participantes.isEmpty) {
+      return Text(
+        'Sin asignar',
+        style: TextStyle(
+          fontSize: 14,
+          color: Colors.grey.shade600,
+        ),
+      );
     }
+
+    return Row(
+      children: [
+        // Mostrar hasta 3 avatares
+        ...participantes.take(3).map(
+              (p) => Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: CircleAvatar(
+              radius: 18,
+              backgroundColor: Colors.grey.shade300,
+              child: Text(
+                p.nombre.substring(0, 1).toUpperCase(),
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ),
+        // Nombre del primer participante
+        const SizedBox(width: 8),
+        Text(
+          participantes.first.nombre,
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
+    );
   }
 
-  Color _getColorForEstado(EstadoTrabajo estado) {
-    switch (estado) {
-      case EstadoTrabajo.CREADO:
-        return Colors.blue;
-      case EstadoTrabajo.EN_PROGRESO:
-        return Colors.orange;
-      case EstadoTrabajo.EN_REVISION:
-        return Colors.purple;
-      case EstadoTrabajo.ENTREGADO:
-        return Colors.green;
-      case EstadoTrabajo.CANCELADO:
-        return Colors.red;
-    }
+  String _formatFecha(DateTime fecha) {
+    final meses = [
+      'enero',
+      'febrero',
+      'marzo',
+      'abril',
+      'mayo',
+      'junio',
+      'julio',
+      'agosto',
+      'septiembre',
+      'octubre',
+      'noviembre',
+      'diciembre'
+    ];
+    return '${fecha.day} ${meses[fecha.month - 1]} ${fecha.year}';
   }
 
-  Color _getColorForPrioridad(Prioridad prioridad) {
-    switch (prioridad) {
-      case Prioridad.BAJA:
-        return Colors.grey;
-      case Prioridad.MEDIA:
-        return Colors.blue;
-      case Prioridad.ALTA:
-        return Colors.orange;
-      case Prioridad.URGENTE:
-        return Colors.red;
-    }
+  String _formatFechaComentario(DateTime fecha) {
+    return '${fecha.day} ${_getNombreMes(fecha.month)}, ${fecha.year}';
   }
 
-  String _formatDate(DateTime date) {
-    return DateFormat('dd/MM/yyyy').format(date);
-  }
-
-  String _formatDateTime(DateTime date) {
-    return DateFormat('dd/MM/yyyy HH:mm').format(date);
+  String _getNombreMes(int mes) {
+    const meses = [
+      'enero',
+      'febrero',
+      'marzo',
+      'abril',
+      'mayo',
+      'junio',
+      'julio',
+      'agosto',
+      'septiembre',
+      'octubre',
+      'noviembre',
+      'diciembre'
+    ];
+    return meses[mes - 1];
   }
 }
