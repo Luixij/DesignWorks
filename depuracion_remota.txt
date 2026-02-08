@@ -5,3 +5,14 @@ Averiguar la ip y el puerto que habilita el móvil junto al código que da
 adb pair 192.168.0.28:35453
 Enter pairing code: 726720
 Successfully paired to 192.168.0.28:35453 [guid=adb-RZGYB16DQTA-IVfjnY]
+
+-------------------------------
+
+IMPORTE 
+
+Este parámetro (--dart-define=API_BASE_URL=http://192.168.0.15:8082)
+se añade en Additional run args al usar depuración remota.
+Es necesario cambiar la IP por la del equipo donde corre el backend,
+ya que la app accede a la API a través de la red local.
+Si la IP no es correcta o el equipo no está en la misma red,
+la app no podrá comunicarse con el servidor
