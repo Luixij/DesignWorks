@@ -47,8 +47,8 @@ public class AuthController {
      */
     @GetMapping("/me")
     public ResponseEntity<UsuarioBasicResponse> getCurrentUser(Principal principal) {
-        // El Principal.getName() devuelve el email del usuario autenticado
-        UsuarioBasicResponse response = authService.getCurrentUser(principal.getName());
-        return ResponseEntity.ok(response);
+        if (principal == null)
+            return ResponseEntity.status(401).build();
+        return ResponseEntity.ok(authService.getCurrentUser(principal.getName()));
     }
 }
