@@ -1,0 +1,22 @@
+Si no se usa ADB inalámbrico, se desconecta con:
+
+adb disconnect
+
+
+-----------------------------
+
+Luego vuelve a ejecutar:
+
+adb reverse tcp:8082 tcp:8082
+
+Permite que una app Android en un móvil físico acceda al puerto 8082 de tu PC usando:
+http://localhost:8082.
+Debo tener en cuenta el puerto en el que corre Spring
+8080 - mac.
+8082 - windows.
+
+-----------------------------
+
+Lanza la app Flutter inyectando una variable de entorno llamada API_BASE_URL con ese valor
+
+flutter run --dart-define=API_BASE_URL=http://127.0.0.1:8082
