@@ -17,6 +17,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _passwordController = TextEditingController();
   bool _loading = false;
   String? _error;
+  bool _obscurePassword = true; // Nueva variable para controlar la visibilidad
 
   Future<void> _login() async {
     setState(() {
@@ -73,10 +74,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
               TextField(
                 controller: _passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
+                obscureText: _obscurePassword, // Usa la variable de estado
+                decoration: InputDecoration(
                   labelText: 'Contraseña',
-                  prefixIcon: Icon(Icons.lock),
+                  prefixIcon: const Icon(Icons.lock),
+                  // Botón para mostrar/ocultar contraseña
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      });
+                    },
+                  ),
                 ),
               ),
               const SizedBox(height: 24),
