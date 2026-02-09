@@ -131,6 +131,9 @@ DesignWorks/
 - [📄 Fase de Análisis (PDF)](docs/imaicela_jaramillo_luis_PROYECTO_DAM_FASE_ANALISIS.pdf)
 - [📄 Fase de Diseño (PDF)](docs/imaicela_jaramillo_luis_PROYECTO_DAM_FASE_DISENO.pdf)
 
+### Diseño y Prototipo
+- **[🎨 Prototipo en Figma](https://www.figma.com/proto/5QfdQWsQ9NVGnyYWs5vkfv/DESIGNWORKS?page-id=0%3A1&node-id=1-3&viewport=474%2C252%2C0.63&t=mKCYhBM2FJWI9Tbb-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1%3A3)** - Diseño interactivo de la aplicación
+
 ## ✨ Funcionalidades Implementadas
 
 ### ✅ Backend (Completamente Funcional)
