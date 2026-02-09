@@ -163,7 +163,6 @@ DesignWorks/
 ### 🔄 En Desarrollo
 - [ ] Implementación de diseño final de Figma (60% completado)
 - [ ] Animaciones y transiciones
-- [ ] Modo claro/oscuro
 
 ### ⏳ Pendiente (Entrega Final)
 - [ ] Tests unitarios e integración
