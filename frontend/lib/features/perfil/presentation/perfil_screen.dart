@@ -5,18 +5,20 @@ import '../../../core/providers.dart';
 import '../application/user_profile_provider.dart';
 import '../../trabajos/application/trabajos_providers.dart';
 
+const _kBgColor = Color(0xFFF4F4F2);
+const _kPadH = 20.0;
+
 class PerfilScreen extends ConsumerWidget {
   const PerfilScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // PERFIL SIEMPRE hidrata desde servidor
     final asyncUser = ref.watch(currentUserRefreshableProvider);
-    // Obtenemos las estadísticas de trabajos
     final asyncStats = ref.watch(homeStatsProvider);
 
-    return Scaffold(
-      body: SafeArea(
+    return ColoredBox(
+      color: _kBgColor,
+      child: SafeArea(
         child: asyncUser.when(
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (error, stack) => Center(
@@ -38,7 +40,8 @@ class PerfilScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 12),
                   OutlinedButton(
-                    onPressed: () => ref.invalidate(currentUserRefreshableProvider),
+                    onPressed: () =>
+                        ref.invalidate(currentUserRefreshableProvider),
                     child: const Text('Reintentar'),
                   ),
                 ],
@@ -47,264 +50,312 @@ class PerfilScreen extends ConsumerWidget {
           ),
           data: (user) {
             return SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Header con botón de logout
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.logout),
-                          onPressed: () async {
-                            await ref.read(secureStoreProvider).clear();
-                            ref.invalidate(currentUserProvider);
-                            ref.invalidate(currentUserRefreshableProvider);
-                            if (context.mounted) context.go('/login');
-                          },
-                          tooltip: 'Cerrar sesión',
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-
-                    // Avatar circular grande
-                    Center(
-                      child: CircleAvatar(
-                        radius: 70,
-                        backgroundColor: user.colorAvatar.withOpacity(0.15),
-                        child: Text(
-                          user.iniciales,
-                          style: TextStyle(
-                            fontSize: 36,
-                            fontWeight: FontWeight.bold,
-                            color: user.colorAvatar,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-
-                    // Nombre
-                    Center(
-                      child: Text(
-                        user.nombre,
-                        style: const TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-
-                    // Email
-                    Center(
-                      child: Text(
-                        user.email,
-                        style: const TextStyle(
-                          fontSize: 15,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 32),
-
-                    // Card de Rol
-                    Card(
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Rol',
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            const SizedBox(height: 12),
-                            Row(
-                              children: [
-                                Icon(
-                                  user.rol.toUpperCase() == 'ADMIN'
-                                      ? Icons.admin_panel_settings
-                                      : Icons.design_services,
-                                  size: 22,
-                                  color: user.colorAvatar,
-                                ),
-                                const SizedBox(width: 10),
-                                Text(
-                                  user.rolFormateado,
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black87,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              user.rol.toUpperCase() == 'ADMIN'
-                                  ? 'Puedes gestionar todos los proyectos'
-                                  : 'Puedes gestionar los trabajos asignados',
-                              style: const TextStyle(
-                                fontSize: 13,
-                                color: Colors.grey,
-                              ),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: _kPadH, vertical: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // ── Icono logout alineado a la derecha ─────────────────
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                      onTap: () async {
+                        await ref.read(secureStoreProvider).clear();
+                        ref.invalidate(currentUserProvider);
+                        ref.invalidate(currentUserRefreshableProvider);
+                        if (context.mounted) context.go('/login');
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.05),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
                             ),
                           ],
                         ),
-                      ),
-                    ),
-                    const SizedBox(height: 32),
-
-                    // Sección "Mi actividad"
-                    const Text(
-                      'Mi actividad',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Estadísticas
-                    asyncStats.when(
-                      loading: () => const Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(32),
-                          child: CircularProgressIndicator(),
+                        child: const Icon(
+                          Icons.logout_rounded,
+                          size: 20,
+                          color: Color(0xFF2D3142),
                         ),
                       ),
-                      error: (error, stack) => Card(
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // ── Avatar ─────────────────────────────────────────────
+                  Container(
+                    width: 110,
+                    height: 110,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: user.colorAvatar.withOpacity(0.15),
+                      border: Border.all(
+                        color: Colors.white,
+                        width: 4,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.08),
+                          blurRadius: 16,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Center(
+                      child: Text(
+                        user.iniciales,
+                        style: TextStyle(
+                          fontSize: 36,
+                          fontWeight: FontWeight.bold,
+                          color: user.colorAvatar,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // ── Nombre ─────────────────────────────────────────────
+                  Text(
+                    user.nombre,
+                    style: const TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF2D3142),
+                      letterSpacing: -0.5,
+                      height: 1.1,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+
+                  // ── Email ──────────────────────────────────────────────
+                  Text(
+                    user.email,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF8A8FA3),
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+
+                  // ── Card Rol ───────────────────────────────────────────
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(24),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Rol',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF8A8FA3),
+                            letterSpacing: 0.3,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          user.rolFormateado,
+                          style: const TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF2D3142),
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          user.rol.toUpperCase() == 'ADMIN'
+                              ? 'Puedes gestionar todos los proyectos'
+                              : 'Puedes gestionar los trabajos asignados',
+                          style: const TextStyle(
+                            fontSize: 13,
+                            color: Color(0xFF8A8FA3),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 28),
+
+                  // ── Mi actividad ───────────────────────────────────────
+                  asyncStats.when(
+                    loading: () => const Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(32),
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                    error: (error, stack) => Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
                         color: Colors.red.shade50,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: const Row(
+                        children: [
+                          Icon(Icons.error_outline, color: Colors.red),
+                          SizedBox(width: 12),
+                          Text(
+                            'Error cargando estadísticas',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ],
+                      ),
+                    ),
+                    data: (stats) => Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Título + total
+                        const Text(
+                          'Mi actividad',
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF2D3142),
+                          ),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Row(
+                        const SizedBox(height: 4),
+                        RichText(
+                          text: TextSpan(
                             children: [
-                              const Icon(Icons.error_outline, color: Colors.red),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Text(
-                                  'Error cargando estadísticas',
-                                  style: const TextStyle(color: Colors.red),
+                              TextSpan(
+                                text: '${stats.total} ',
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF2D3142),
+                                ),
+                              ),
+                              const TextSpan(
+                                text: 'Proyectos asignados',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Color(0xFF2D3142),
+                                  fontWeight: FontWeight.w400,
                                 ),
                               ),
                             ],
                           ),
                         ),
-                      ),
-                      data: (stats) => Column(
-                        children: [
-                          // Total de proyectos asignados
-                          Card(
-                            elevation: 1,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 16,
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.assignment_outlined,
-                                    color: Colors.grey.shade700,
-                                    size: 22,
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Expanded(
-                                    child: Text(
-                                      '${stats.total} Proyectos asignados',
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 12),
+                        const SizedBox(height: 16),
 
-                          // En progreso (estilo home_screen)
-                          Card(
-                            elevation: 2,
-                            child: ListTile(
-                              leading: CircleAvatar(
-                                backgroundColor: Colors.orange.withOpacity(0.1),
-                                child: const Icon(
-                                  Icons.hourglass_empty_outlined,
-                                  color: Colors.orange,
-                                ),
-                              ),
-                              title: const Text(
-                                'En progreso',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              trailing: Text(
-                                stats.enProgreso.toString(),
-                                style: const TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.orange,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 12),
+                        // Card En progreso
+                        _BigStatCard(
+                          title: 'En progreso',
+                          count: stats.enProgreso,
+                          icon: Icons.code,
+                          backgroundColor: const Color(0xFFB5D5A8),
+                        ),
+                        const SizedBox(height: 14),
 
-                          // Entregados (estilo home_screen)
-                          Card(
-                            elevation: 2,
-                            child: ListTile(
-                              leading: CircleAvatar(
-                                backgroundColor: Colors.green.withOpacity(0.1),
-                                child: const Icon(
-                                  Icons.check_circle_outline,
-                                  color: Colors.green,
-                                ),
-                              ),
-                              title: const Text(
-                                'Entregados',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              trailing: Text(
-                                stats.entregados.toString(),
-                                style: const TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.green,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                        // Card Entregados
+                        _BigStatCard(
+                          title: 'Entregados',
+                          count: stats.entregados,
+                          icon: Icons.check,
+                          backgroundColor: const Color(0xFF9DB8D9),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 32),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 20),
+                ],
               ),
             );
           },
         ),
+      ),
+    );
+  }
+}
+
+// ── Big Stat Card (misma que home_screen) ─────────────────────────────────────
+
+class _BigStatCard extends StatelessWidget {
+  final String title;
+  final int count;
+  final IconData icon;
+  final Color backgroundColor;
+
+  const _BigStatCard({
+    required this.title,
+    required this.count,
+    required this.icon,
+    required this.backgroundColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 130,
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: Stack(
+        children: [
+          Positioned(
+            top: 16,
+            right: 20,
+            child: Icon(
+              icon,
+              size: 22,
+              color: Colors.black.withOpacity(0.45),
+            ),
+          ),
+          Positioned(
+            bottom: 16,
+            left: 16,
+            child: Container(
+              padding:
+              const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.55),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF2D3142),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 10,
+            right: 20,
+            child: Text(
+              count.toString(),
+              style: TextStyle(
+                fontSize: 52,
+                fontWeight: FontWeight.bold,
+                color: Colors.black.withOpacity(0.6),
+                height: 1.0,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -4,6 +4,10 @@ import 'package:go_router/go_router.dart';
 import '../../trabajos/application/trabajos_providers.dart';
 import '../../perfil/application/user_profile_provider.dart';
 
+// Color de fondo compartido con el resto de pantallas
+const _kBgColor = Color(0xFFF4F4F2);
+const _kPadH = 20.0;
+
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
@@ -12,9 +16,9 @@ class HomeScreen extends ConsumerWidget {
     final asyncStats = ref.watch(homeStatsProvider);
     final asyncUser = ref.watch(currentUserProvider);
 
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
+    return ColoredBox(
+      color: _kBgColor,
+      child: SafeArea(
         child: asyncStats.when(
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (error, stack) => Center(
@@ -32,108 +36,121 @@ class HomeScreen extends ConsumerWidget {
               ],
             ),
           ),
-          data: (stats) => Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Saludo dinámico con el nombre del usuario
-              asyncUser.when(
-                loading: () => const Text(
-                  'Hola',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                error: (_, __) => const Text(
-                  'Hola',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                data: (user) {
-                  if (user == null) {
-                    return const Text(
-                      'Hola',
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                    );
-                  }
-
-                  // Obtener solo el primer nombre
-                  final primerNombre = user.nombre.split(' ').first;
-
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Hola, $primerNombre',
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
+          data: (stats) => SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: _kPadH, vertical: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // ── Saludo dinámico ────────────────────────────────────────
+                asyncUser.when(
+                  loading: () => const Text(
+                    'Hola',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF2D3142),
+                    ),
+                  ),
+                  error: (_, __) => const Text(
+                    'Hola',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF2D3142),
+                    ),
+                  ),
+                  data: (user) {
+                    if (user == null) {
+                      return const Text(
+                        'Hola',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF2D3142),
                         ),
-                      ),
-                      const SizedBox(height: 4),
-                      Row(
-                        children: [
-                          Icon(
-                            user.rol.toUpperCase() == 'ADMIN'
-                                ? Icons.admin_panel_settings
-                                : Icons.design_services,
-                            size: 16,
-                            color: user.colorAvatar,
+                      );
+                    }
+                    final primerNombre = user.nombre.split(' ').first;
+                    return Row(
+                      children: [
+                        Text(
+                          'Hola, $primerNombre',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF2D3142),
                           ),
-                          const SizedBox(width: 4),
-                          Text(
-                            user.rolFormateado,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: user.colorAvatar,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  );
-                },
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Tienes ${stats.total} trabajo${stats.total != 1 ? 's' : ''} asignado${stats.total != 1 ? 's' : ''}',
-                style: const TextStyle(fontSize: 16, color: Colors.grey),
-              ),
-              const SizedBox(height: 24),
+                        ),
+                        const SizedBox(width: 8),
+                        Icon(
+                          user.rol.toUpperCase() == 'ADMIN'
+                              ? Icons.admin_panel_settings
+                              : Icons.design_services,
+                          size: 16,
+                          color: user.colorAvatar,
+                        ),
+                      ],
+                    );
+                  },
+                ),
+                const SizedBox(height: 4),
+                const Text(
+                  'Actualmente tienes',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Color(0xFF2D3142),
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  '${stats.total} Trabajo${stats.total != 1 ? 's' : ''}',
+                  style: const TextStyle(
+                    fontSize: 36,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF2D3142),
+                    height: 1.1,
+                  ),
+                ),
+                const SizedBox(height: 28),
 
-              // Cards de estadísticas
-              _StatCard(
-                title: 'Creados',
-                count: stats.creados,
-                icon: Icons.new_releases_outlined,
-                color: Colors.blue,
-              ),
-              const SizedBox(height: 12),
-              _StatCard(
-                title: 'En progreso',
-                count: stats.enProgreso,
-                icon: Icons.hourglass_empty_outlined,
-                color: Colors.orange,
-              ),
-              const SizedBox(height: 12),
-              _StatCard(
-                title: 'En revisión',
-                count: stats.enRevision,
-                icon: Icons.visibility_outlined,
-                color: Colors.purple,
-              ),
-              const SizedBox(height: 12),
-              _StatCard(
-                title: 'Entregados',
-                count: stats.entregados,
-                icon: Icons.check_circle_outline,
-                color: Colors.green,
-              ),
-              const SizedBox(height: 12),
-              _StatCard(
-                title: 'Cancelados',
-                count: stats.cancelados,
-                icon: Icons.cancel_outlined,
-                color: Colors.red,
-              ),
-            ],
+                // ── Stat Cards ─────────────────────────────────────────────
+                _BigStatCard(
+                  title: 'En progreso',
+                  count: stats.enProgreso,
+                  icon: Icons.code,
+                  backgroundColor: const Color(0xFFB5D5A8),
+                ),
+                const SizedBox(height: 14),
+                _BigStatCard(
+                  title: 'En revisión',
+                  count: stats.enRevision,
+                  icon: Icons.search,
+                  backgroundColor: const Color(0xFF8ECFBB),
+                ),
+                const SizedBox(height: 14),
+                _BigStatCard(
+                  title: 'Entregados',
+                  count: stats.entregados,
+                  icon: Icons.check,
+                  backgroundColor: const Color(0xFF9DB8D9),
+                ),
+                const SizedBox(height: 14),
+                _BigStatCard(
+                  title: 'Creados',
+                  count: stats.creados,
+                  icon: Icons.schedule,
+                  backgroundColor: const Color(0xFFD4D97A),
+                ),
+                const SizedBox(height: 14),
+                _BigStatCard(
+                  title: 'Cancelados',
+                  count: stats.cancelados,
+                  icon: Icons.close,
+                  backgroundColor: const Color(0xFFE8A598),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -141,37 +158,68 @@ class HomeScreen extends ConsumerWidget {
   }
 }
 
-class _StatCard extends StatelessWidget {
+class _BigStatCard extends StatelessWidget {
   final String title;
   final int count;
   final IconData icon;
-  final Color color;
+  final Color backgroundColor;
 
-  const _StatCard({
+  const _BigStatCard({
     required this.title,
     required this.count,
     required this.icon,
-    required this.color,
+    required this.backgroundColor,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: color.withOpacity(0.1),
-          child: Icon(icon, color: color),
-        ),
-        title: Text(title, style: const TextStyle(fontSize: 16)),
-        trailing: Text(
-          count.toString(),
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: color,
+    return Container(
+      width: double.infinity,
+      height: 130,
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: Stack(
+        children: [
+          Positioned(
+            top: 16,
+            right: 20,
+            child: Icon(icon, size: 22, color: Colors.black.withOpacity(0.45)),
           ),
-        ),
+          Positioned(
+            bottom: 16,
+            left: 16,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.55),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF2D3142),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 10,
+            right: 20,
+            child: Text(
+              count.toString(),
+              style: TextStyle(
+                fontSize: 52,
+                fontWeight: FontWeight.bold,
+                color: Colors.black.withOpacity(0.6),
+                height: 1.0,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
