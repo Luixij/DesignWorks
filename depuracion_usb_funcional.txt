@@ -20,3 +20,7 @@ Debo tener en cuenta el puerto en el que corre Spring
 Lanza la app Flutter inyectando una variable de entorno llamada API_BASE_URL con ese valor
 
 flutter run --dart-define=API_BASE_URL=http://127.0.0.1:8082
+
+Usar hot reload para cambios
+
+flutter run --dart-define=API_BASE_URL=http://127.0.0.1:8082 --hot
