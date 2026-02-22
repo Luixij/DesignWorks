@@ -10,6 +10,7 @@ class TrabajoDetail {
   final String titulo;
   final String cliente;
   final String descripcion;
+  final String? imagenUrl;        // Campo adjunto_url / imagen_url de la tabla trabajos
   final Prioridad prioridad;
   final EstadoTrabajo estadoActual;
   final DateTime fechaInicio;
@@ -26,6 +27,7 @@ class TrabajoDetail {
     required this.titulo,
     required this.cliente,
     required this.descripcion,
+    this.imagenUrl,
     required this.prioridad,
     required this.estadoActual,
     required this.fechaInicio,
@@ -42,6 +44,8 @@ class TrabajoDetail {
     titulo: (json['titulo'] ?? '') as String,
     cliente: (json['cliente'] ?? '') as String,
     descripcion: (json['descripcion'] ?? '') as String,
+    // Intenta los nombres más comunes que puede tener el campo en el backend
+    imagenUrl: (json['imagenUrl'] ?? json['imagen_url'] ?? json['adjuntoUrl'] ?? json['adjunto_url']) as String?,
     prioridad: (json['prioridad'] as String).toPrioridad(),
     estadoActual: (json['estadoActual'] as String).toEstadoTrabajo(),
     fechaInicio: DateTime.parse(json['fechaInicio'] as String),
