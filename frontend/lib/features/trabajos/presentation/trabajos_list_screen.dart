@@ -163,8 +163,7 @@ class TrabajosListScreen extends ConsumerWidget {
                     ),
                   )
                       : ListView.separated(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: _kPadH),
+                    padding: const EdgeInsets.fromLTRB(_kPadH, 0, _kPadH, 110),
                     itemCount: listaFiltrada.length,
                     separatorBuilder: (_, __) =>
                     const SizedBox(height: 16),

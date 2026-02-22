@@ -50,8 +50,7 @@ class PerfilScreen extends ConsumerWidget {
           ),
           data: (user) {
             return SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: _kPadH, vertical: 20),
+              padding: const EdgeInsets.fromLTRB(_kPadH, 20, _kPadH, 110),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

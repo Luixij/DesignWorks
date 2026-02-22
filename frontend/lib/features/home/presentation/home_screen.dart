@@ -37,7 +37,7 @@ class HomeScreen extends ConsumerWidget {
             ),
           ),
           data: (stats) => SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: _kPadH, vertical: 24),
+            padding: const EdgeInsets.fromLTRB(_kPadH, 24, _kPadH, 110),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

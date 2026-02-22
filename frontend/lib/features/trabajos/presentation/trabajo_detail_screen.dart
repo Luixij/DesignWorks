@@ -88,7 +88,7 @@ class TrabajoDetailScreen extends ConsumerWidget {
           ),
         ),
         data: (detail) => SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(_kPadH, 8, _kPadH, 32),
+          padding: const EdgeInsets.fromLTRB(20, 8, 20, 110),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
