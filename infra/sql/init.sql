@@ -180,12 +180,12 @@ INSERT INTO trabajo_participantes (trabajo_id, usuario_id, rol_en_trabajo) VALUE
 
 -- Requisitos
 INSERT INTO requisitos (trabajo_id, descripcion, adjunto_url) VALUES
-(1, 'Logotipo principal + versión monocroma + favicon.', NULL),
-(1, 'Aplicación en vaso, bolsa y tarjeta.', NULL),
-(2, 'Cartel A2 y A3 + versión redes (1080x1350).', 'https://example.com/referencias/festival-estella.zip'),
-(3, 'Maquetación 24 páginas con retícula 12 columnas.', NULL),
-(4, 'Estilo ilustración: orgánico, colores tierra.', 'https://example.com/referencias/miel-paleta.png'),
-(6, '12 plantillas: 6 posts + 6 stories + guía rápida.', NULL);
+(1, 'Logotipo principal + versión monocroma + favicon.', 'https://www.luisimaicela.com/designworks/1.cafeteria_nomada.jpg'),
+(1, 'Aplicación en vaso, bolsa y tarjeta.', 'https://www.luisimaicela.com/designworks/2.ayto_estella_festival_carteleria.jpg'),
+(2, 'Cartel A2 y A3 + versión redes (1080x1350).', 'https://www.luisimaicela.com/designworks/2.ayto_estella_festival_carteleria.jpg'),
+(3, 'Maquetación 24 páginas con retícula 12 columnas.', 'https://www.luisimaicela.com/designworks/3.tienda_verde_catalogo.jpg'),
+(4, 'Estilo ilustración: orgánico, colores tierra.', 'https://www.luisimaicela.com/designworks/4.miel_valle_packaging.jpg'),
+(6, '12 plantillas: 6 posts + 6 stories + guía rápida.', 'https://www.luisimaicela.com/designworks/6.clinica_sonrie_rrss.jpg');
 
 -- Historial de estados
 INSERT INTO historial_estados (trabajo_id, estado, fecha, usuario_id, motivo) VALUES
