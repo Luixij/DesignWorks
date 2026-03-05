@@ -28,7 +28,8 @@ class AuthRepository {
         throw Exception('Respuesta inesperada del login: ${loginRes.data}');
       }
 
-      final login = LoginResponse.fromJson(loginRes.data as Map<String, dynamic>);
+      final login =
+      LoginResponse.fromJson(loginRes.data as Map<String, dynamic>);
 
       // ============================================
       // PASO 2: Limpiar sesión anterior
@@ -56,14 +57,35 @@ class AuthRepository {
 
       return login;
     } on DioException catch (e) {
-      if (e.response?.statusCode == 401) {
-        throw Exception('Credenciales inválidas');
-      } else if (e.response?.statusCode == 403) {
-        throw Exception('Usuario desactivado');
+      // ============================================
+      // Manejo de errores HTTP (Dio)
+      // - Prioridad: mensaje del backend (ErrorResponse.message)
+      // - Fallback: mensajes por defecto según statusCode
+      // ============================================
+      final status = e.response?.statusCode;
+
+      // Intenta leer mensaje del backend (ErrorResponse.message)
+      String? backendMessage;
+      final data = e.response?.data;
+
+      if (data is Map<String, dynamic> && data['message'] is String) {
+        backendMessage = data['message'] as String;
+      }
+
+      if (status == 401) {
+        // Credenciales inválidas
+        throw Exception(backendMessage ?? 'Credenciales inválidas');
+      } else if (status == 403) {
+        // Usuario desactivado / acceso denegado
+        throw Exception(backendMessage ?? 'Usuario desactivado');
       } else {
-        throw Exception('Error de conexión: ${e.message}');
+        // Otros errores: red, 500, timeouts, etc.
+        throw Exception(backendMessage ?? 'Error de conexión: ${e.message}');
       }
     } catch (e) {
+      // ============================================
+      // Cualquier otro error inesperado
+      // ============================================
       throw Exception('Error inesperado durante el login: $e');
     }
   }
@@ -80,11 +102,30 @@ class AuthRepository {
 
       return UsuarioBasicResponse.fromJson(res.data as Map<String, dynamic>);
     } on DioException catch (e) {
-      if (e.response?.statusCode == 401) {
-        await store.clear();
-        throw Exception('Sesión expirada');
+      // ============================================
+      // Manejo de errores en /auth/me
+      // - Prioridad: mensaje del backend (ErrorResponse.message)
+      // - 401 normalmente significa token inválido/expirado
+      // ============================================
+      final status = e.response?.statusCode;
+
+      String? backendMessage;
+      final data = e.response?.data;
+      if (data is Map<String, dynamic> && data['message'] is String) {
+        backendMessage = data['message'] as String;
       }
-      throw Exception('Error obteniendo información del usuario: ${e.message}');
+
+      if (status == 401) {
+        // Nota:
+        // Si tu ApiClient ya hace store.clear() + onUnauthorized() en 401,
+        // esto puede ser redundante, pero no hace daño.
+        await store.clear();
+        throw Exception(backendMessage ?? 'Sesión expirada');
+      }
+
+      throw Exception(
+        backendMessage ?? 'Error obteniendo información del usuario: ${e.message}',
+      );
     }
   }
 
