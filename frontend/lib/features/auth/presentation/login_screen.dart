@@ -20,18 +20,74 @@ class LoginScreen extends ConsumerStatefulWidget {
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
   bool _loading = false;
   String? _error;
   bool _obscurePassword = true;
 
+  // ✅ Regex simple para validar email (suficiente para validación UI)
+  static final RegExp _emailRegex =
+  RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$');
+
+  @override
+  void initState() {
+    super.initState();
+
+    // ✅ Si el usuario empieza a escribir, limpiamos el error visual
+    _emailController.addListener(_clearErrorOnInput);
+    _passwordController.addListener(_clearErrorOnInput);
+  }
+
+  void _clearErrorOnInput() {
+    if (_error != null) {
+      setState(() => _error = null);
+    }
+  }
+
   @override
   void dispose() {
+    // ✅ Importante: quitar listeners antes de dispose
+    _emailController.removeListener(_clearErrorOnInput);
+    _passwordController.removeListener(_clearErrorOnInput);
+
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
+  // ✅ Validación local rápida antes de pedir al servidor
+  String? _validateInputs() {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+
+    if (email.isEmpty && password.isEmpty) {
+      return 'Introduce tu correo y tu contraseña';
+    }
+    if (email.isEmpty) {
+      return 'Introduce tu correo electrónico';
+    }
+    if (!_emailRegex.hasMatch(email)) {
+      return 'El correo electrónico no tiene un formato válido';
+    }
+    if (password.isEmpty) {
+      return 'Introduce tu contraseña';
+    }
+    return null;
+  }
+
   Future<void> _login() async {
+    // ✅ Evita doble submit
+    if (_loading) return;
+
+    // ✅ Validación antes de llamar a API
+    final validationError = _validateInputs();
+    if (validationError != null) {
+      setState(() {
+        _error = validationError;
+      });
+      return;
+    }
+
     setState(() {
       _loading = true;
       _error = null;
@@ -50,6 +106,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       if (!mounted) return;
       context.go('/home');
     } catch (e) {
+      // ✅ Mensaje limpio (quita "Exception: ")
       setState(() {
         _error = e.toString().replaceFirst('Exception: ', '');
       });
@@ -118,12 +175,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               controller: _emailController,
                               hint: 'Correo electrónico',
                               keyboardType: TextInputType.emailAddress,
+                              // ✅ UX: al pulsar "enter" en email, pasa a password
+                              textInputAction: TextInputAction.next,
                             ),
                             const SizedBox(height: 14),
                             _GlassField(
                               controller: _passwordController,
                               hint: 'Contraseña',
                               obscureText: _obscurePassword,
+                              // ✅ UX: al pulsar "done", intenta login
+                              textInputAction: TextInputAction.done,
+                              onSubmitted: (_) => _login(),
                               suffixIcon: IconButton(
                                 icon: Icon(
                                   _obscurePassword
@@ -133,7 +195,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   size: 22,
                                 ),
                                 onPressed: () => setState(
-                                        () => _obscurePassword = !_obscurePassword),
+                                      () => _obscurePassword = !_obscurePassword,
+                                ),
                               ),
                             ),
 
@@ -141,7 +204,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               const SizedBox(height: 12),
                               Container(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 10),
+                                  horizontal: 16,
+                                  vertical: 10,
+                                ),
                                 decoration: BoxDecoration(
                                   color: Colors.red.withOpacity(0.15),
                                   borderRadius: BorderRadius.circular(12),
@@ -274,12 +339,18 @@ class _GlassField extends StatelessWidget {
   final TextInputType keyboardType;
   final Widget? suffixIcon;
 
+  // ✅ Nuevos (manteniendo compatibilidad)
+  final TextInputAction textInputAction;
+  final ValueChanged<String>? onSubmitted;
+
   const _GlassField({
     required this.controller,
     required this.hint,
     this.obscureText = false,
     this.keyboardType = TextInputType.text,
     this.suffixIcon,
+    this.textInputAction = TextInputAction.done,
+    this.onSubmitted,
   });
 
   @override
@@ -294,6 +365,8 @@ class _GlassField extends StatelessWidget {
         controller: controller,
         obscureText: obscureText,
         keyboardType: keyboardType,
+        textInputAction: textInputAction, // ✅
+        onSubmitted: onSubmitted, // ✅
         style: const TextStyle(
           color: Color(0xFF1C3A47),
           fontSize: 15,
