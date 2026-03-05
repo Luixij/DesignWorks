@@ -6,7 +6,10 @@ adb pair 192.168.0.28:35453
 Enter pairing code: 726720
 Successfully paired to 192.168.0.28:35453 [guid=adb-RZGYB16DQTA-IVfjnY]
 
--------------------------------
+Luego usar
+adb connect con la ip y puerta que se muestra en depuración inalámbrica
+
+-------------------------------p
 
 IMPORTE 
 
