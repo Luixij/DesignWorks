@@ -55,12 +55,13 @@ UI/UX Final    ████████████████████ 100%
 
 **Entregable**: `docs/imaicela_jaramillo_luis_PROYECTO_DAM_FASE_DISENO.pdf`
 
-### Frontend
-1. **Implementación de diseño final de Figma** (Prioridad: Alta)
-   - Adaptar todas las pantallas al diseño definitivo
-   - Aplicar sistema de colores y tipografías
-   - Implementar componentes personalizados
-   - Añadir animaciones y transiciones
+### Frontend (UI/UX)
+
+#### Implementación del diseño final de Figma
+- [x] Adaptación de todas las pantallas al diseño definitivo
+- [x] Aplicación del sistema de colores y tipografías
+- [x] Implementación de componentes personalizados
+- [x] Animaciones y transiciones básicas
 
 ---
 
