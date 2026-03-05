@@ -19,31 +19,69 @@ class ApiClient {
 
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
-        final token = await store.getToken();
+        // =========================================================
+        // 1) Detección de endpoints especiales
+        //    (para no mezclar login con sesión expirada)
+        // =========================================================
+        final path = options.path; // Ej: /auth/login
+        final method = options.method.toUpperCase();
 
-        // Normaliza token
-        if (token != null && token.trim().isNotEmpty) {
-          final t = token.startsWith('Bearer ') ? token.substring(7) : token;
-          options.headers['Authorization'] = 'Bearer $t';
+        final isLoginRequest =
+        (method == 'POST' && path.contains('/auth/login'));
+
+        // =========================================================
+        // 2) Añadir token SOLO si NO es el endpoint de login
+        //    (opcional pero recomendado para evitar enviar token viejo)
+        // =========================================================
+        if (!isLoginRequest) {
+          final token = await store.getToken();
+
+          // Normaliza token
+          if (token != null && token.trim().isNotEmpty) {
+            final t = token.startsWith('Bearer ') ? token.substring(7) : token;
+            options.headers['Authorization'] = 'Bearer $t';
+          }
         }
 
-        //  Log SIEMPRE
+        // =========================================================
+        // 3) Log SIEMPRE (para depuración)
+        // =========================================================
         print('➡️ ${options.method} ${options.uri}');
         print('🔐 Authorization: ${options.headers['Authorization'] ?? 'NULL'}');
 
         handler.next(options);
       },
       onError: (e, handler) async {
-        print('❌ ${e.response?.statusCode} ${e.requestOptions.method} ${e.requestOptions.uri}');
+        // =========================================================
+        // Log de errores
+        // =========================================================
+        print(
+          '❌ ${e.response?.statusCode} ${e.requestOptions.method} ${e.requestOptions.uri}',
+        );
         print('🧾 RESP: ${e.response?.data}');
 
-        //  Solo logout si ES realmente 401
-        if (e.response?.statusCode == 401) {
+        final status = e.response?.statusCode;
+        final path = e.requestOptions.path; // Ej: /auth/login
+        final method = e.requestOptions.method.toUpperCase();
+
+        // =========================================================
+        // Evitar confusión:
+        // - 401 en /auth/login = credenciales inválidas (NO logout global)
+        // - 401 en otros endpoints = token inválido/expirado (SÍ logout)
+        // =========================================================
+        final isLoginRequest =
+        (method == 'POST' && path.contains('/auth/login'));
+
+        if (status == 401 && !isLoginRequest) {
           await store.clear();
           onUnauthorized();
         }
 
-        handler.next(e);
+        // =========================================================
+        // IMPORTANTE:
+        // Propagar el error correctamente para que el Repository lo capture
+        // =========================================================
+        handler.reject(e);
       },
     ));
 
