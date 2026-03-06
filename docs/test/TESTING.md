@@ -186,7 +186,7 @@ Validan aspectos de usabilidad, validación de formularios, portabilidad y mante
 
 ### 9.1 Autenticación
 
-| ID | Requisito | CU | Endpoint / área | Rol | Precondición | Pasos resumidos | Resultado esperado | Evidencia sugerida |
+| ID | Requisito | CU | Endpoint / área | Rol | Precondición | Pasos resumidos | Resultado esperado | Evidencia |
 |---|---|---|---|---|---|---|---|---|
 | TP-AUTH-01 | RF1 | CU1 | `POST /auth/login` | ADMIN / DISENADOR | Usuario existente | Enviar email y password válidos | `200 OK`, respuesta con `token` y `rol` | Captura Swagger/Postman + JSON |
 | TP-AUTH-02 | RF1 | CU1 | `POST /auth/login` | ADMIN / DISENADOR | Usuario existente | Enviar password incorrecta | Error de autenticación (`401` o el código configurado) | Captura respuesta |
@@ -196,7 +196,7 @@ Validan aspectos de usabilidad, validación de formularios, portabilidad y mante
 
 ### 9.2 Trabajos
 
-| ID | Requisito | CU | Endpoint / área | Rol | Precondición | Pasos resumidos | Resultado esperado | Evidencia sugerida |
+| ID | Requisito | CU | Endpoint / área | Rol | Precondición | Pasos resumidos | Resultado esperado | Evidencia |
 |---|---|---|---|---|---|---|---|---|
 | TP-TRAB-01 | RF4 | CU3 | `POST /trabajos` | ADMIN | Token ADMIN válido | Crear un trabajo con título, cliente, descripción, prioridad, fecha fin y, opcionalmente, participantes/requisitos | Trabajo creado y devuelto como detalle | Captura request/response |
 | TP-TRAB-02 | RNF3 | CU3 | `POST /trabajos` | ADMIN | Token ADMIN válido | Enviar payload incompleto o con datos inválidos | Error controlado, sin caída del sistema | Captura |
@@ -209,7 +209,7 @@ Validan aspectos de usabilidad, validación de formularios, portabilidad y mante
 
 ### 9.3 Estados
 
-| ID | Requisito | CU | Endpoint / área | Rol | Precondición | Pasos resumidos | Resultado esperado | Evidencia sugerida |
+| ID | Requisito | CU | Endpoint / área | Rol | Precondición | Pasos resumidos | Resultado esperado | Evidencia |
 |---|---|---|---|---|---|---|---|---|
 | TP-EST-01 | RF8 / RF9 | CU10 | `PUT /trabajos/{id}/estado` | ADMIN | Trabajo existente | Cambiar estado de `CREADO` a `EN_PROGRESO` | Cambio aplicado correctamente | Captura |
 | TP-EST-02 | RF8 / RF9 | CU10 | `PUT /trabajos/{id}/estado` | Participante | Trabajo asignado al usuario | Cambiar estado permitido | Cambio aplicado correctamente | Captura |
@@ -220,7 +220,7 @@ Validan aspectos de usabilidad, validación de formularios, portabilidad y mante
 
 ### 9.4 Requisitos
 
-| ID | Requisito | CU | Endpoint / área | Rol | Precondición | Pasos resumidos | Resultado esperado | Evidencia sugerida |
+| ID | Requisito | CU | Endpoint / área | Rol | Precondición | Pasos resumidos | Resultado esperado | Evidencia |
 |---|---|---|---|---|---|---|---|---|
 | TP-REQ-01 | RF7 | CU6 | `POST /trabajos/{trabajoId}/requisitos` | ADMIN | Trabajo existente | Añadir un requisito al trabajo | Requisito creado | Captura |
 | TP-REQ-02 | RF7 | CU6 | `GET /trabajos/{trabajoId}/requisitos` | ADMIN o participante | Trabajo existente | Consultar requisitos del trabajo | Lista de requisitos | Captura |
@@ -228,7 +228,7 @@ Validan aspectos de usabilidad, validación de formularios, portabilidad y mante
 
 ### 9.5 Comentarios
 
-| ID | Requisito | CU | Endpoint / área | Rol | Precondición | Pasos resumidos | Resultado esperado | Evidencia sugerida |
+| ID | Requisito | CU | Endpoint / área | Rol | Precondición | Pasos resumidos | Resultado esperado | Evidencia |
 |---|---|---|---|---|---|---|---|---|
 | TP-COM-01 | RF10 | CU11 | `POST /trabajos/{trabajoId}/comentarios` | ADMIN o participante | Trabajo accesible | Crear comentario | Comentario creado | Captura |
 | TP-COM-02 | RF10 | CU11 | `GET /trabajos/{trabajoId}/comentarios` | ADMIN o participante | Existen comentarios o el trabajo es accesible | Consultar comentarios del trabajo | Lista ordenada por fecha ascendente | Captura |
@@ -236,7 +236,7 @@ Validan aspectos de usabilidad, validación de formularios, portabilidad y mante
 
 ### 9.6 Historial
 
-| ID | Requisito | CU | Endpoint / área | Rol | Precondición | Pasos resumidos | Resultado esperado | Evidencia sugerida |
+| ID | Requisito | CU | Endpoint / área | Rol | Precondición | Pasos resumidos | Resultado esperado | Evidencia |
 |---|---|---|---|---|---|---|---|---|
 | TP-HIST-01 | RF14 | CU12 | `GET /trabajos/{trabajoId}/historial` | ADMIN o participante | Trabajo accesible | Consultar historial del trabajo | Lista de cambios de estado | Captura |
 | TP-HIST-02 | RNF8 | CU12 | `GET /trabajos/{trabajoId}/historial` | DISENADOR no participante | Trabajo ajeno | Intentar consultar historial | Acceso denegado | Captura |
