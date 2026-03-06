@@ -48,6 +48,13 @@ public class SecurityConfig {
                         // si existe:
                         // .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
 
+                        // Swagger / OpenAPI público
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html")
+                        .permitAll()
+
                         // Protegido
                         .requestMatchers(HttpMethod.GET, "/auth/me").authenticated()
 
