@@ -14,10 +14,13 @@ import com.designworks.backend.dto.LoginResponse;
 import com.designworks.backend.dto.response.UsuarioBasicResponse;
 import com.designworks.backend.services.AuthService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
+@Tag(name = "Autenticación", description = "Operaciones de autenticación y consulta del usuario autenticado")
 public class AuthController {
 
     private final AuthService authService;
@@ -30,6 +33,7 @@ public class AuthController {
      * Endpoint de login
      * POST /auth/login
      */
+    @Operation(summary = "Iniciar sesión", description = "Autentica al usuario y devuelve el token JWT")
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest req) {
         return ResponseEntity.ok(authService.login(req));
@@ -45,6 +49,7 @@ public class AuthController {
      *                  (extraído automáticamente del JWT por Spring Security)
      * @return Información básica del usuario (id, nombre, email, rol)
      */
+    @Operation(summary = "Obtener usuario autenticado", description = "Devuelve la información básica del usuario autenticado a partir del JWT")
     @GetMapping("/me")
     public ResponseEntity<UsuarioBasicResponse> getCurrentUser(Principal principal) {
         if (principal == null)

@@ -14,9 +14,12 @@ import com.designworks.backend.dto.request.ComentarioCreateRequest;
 import com.designworks.backend.dto.response.ComentarioResponse;
 import com.designworks.backend.services.ComentarioService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/trabajos/{trabajoId}/comentarios")
+@Tag(name = "Comentarios", description = "Gestión de comentarios asociados a trabajos")
 public class ComentarioController {
 
     private final ComentarioService comentarioService;
@@ -26,6 +29,7 @@ public class ComentarioController {
     }
 
     // POST comentarios → ADMIN o si participa
+    @Operation(summary = "Crear comentario", description = "Añade un comentario a un trabajo. ADMIN o participante.")
     @PreAuthorize("hasRole('ADMIN') or @trabajoAuthz.esParticipante(#trabajoId)")
     @PostMapping
     public ComentarioResponse crear(@PathVariable Long trabajoId, @RequestBody ComentarioCreateRequest req) {
@@ -33,6 +37,7 @@ public class ComentarioController {
     }
 
     // GET comentarios → ADMIN o si participa
+    @Operation(summary = "Listar comentarios", description = "Devuelve los comentarios de un trabajo. ADMIN o participante.")
     @PreAuthorize("hasRole('ADMIN') or @trabajoAuthz.esParticipante(#trabajoId)")
     @GetMapping
     public List<ComentarioResponse> listar(@PathVariable Long trabajoId) {
