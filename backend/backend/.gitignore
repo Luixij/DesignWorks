@@ -31,3 +31,4 @@ build/
 
 ### ENV ###
 backend/.env
+.vscode/launch.json
