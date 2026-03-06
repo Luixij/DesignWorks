@@ -10,7 +10,9 @@
         "SPRING_PROFILES_ACTIVE": "dev",
         "DB_URL": "jdbc:mariadb://127.0.0.1:3306/design_works",
         "DB_USER": "YOUR_DB_USER",
-        "DB_PASS": "YOUR_DB_PASSWORD"
+        "DB_PASS": "YOUR_DB_PASSWORD",
+        "JWT_SECRET": "YOUR_JWT_SECRET",
+        "JWT_EXP_MINUTES": "240"
       }
     }
   ]
