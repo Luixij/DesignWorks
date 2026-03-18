@@ -84,9 +84,62 @@ SELECT * FROM trabajos ORDER BY id;
 ## ⚙️ Configuración del Backend (Spring Boot)
 
 ### 1. Navegar a la Carpeta del Backend
+## ⚠️ Estructura real de carpetas del backend
+
+En este proyecto, el backend Maven/Spring Boot **no está directamente en `backend/`**, sino en:
+
+```text
+DesignWorks/
+└── backend/
+    └── backend/
+        ├── pom.xml
+        ├── mvnw
+        ├── mvnw.cmd
+        ├── src/
+        └── ...
+
+
+Eso significa que para ejecutar Spring Boot, tests o cualquier comando Maven, debes situarte en la carpeta que **contiene directamente `pom.xml`**.
+
+### 1. Navegar a la Carpeta Correcta del Backend
+
+#### macOS / Linux:
 ```bash
-cd backend
+cd backend/backend
 ```
+
+#### Windows (PowerShell):
+```powershell
+cd .\backend\backend
+```
+
+### 2. Verificar que Estás en la Carpeta Correcta
+
+#### macOS / Linux:
+```bash
+pwd
+ls
+```
+
+#### Windows (PowerShell):
+```powershell
+Get-Location
+dir
+Test-Path .\pom.xml
+```
+
+Debes ver archivos como:
+- `pom.xml`
+- `mvnw`
+- `mvnw.cmd`
+- `src`
+
+Si `pom.xml` **no aparece**, estás un nivel por encima y Maven dará errores como:
+
+```text
+No plugin found for prefix 'spring-boot'
+```
+
 
 ### 2. Configurar Variables de Entorno
 
