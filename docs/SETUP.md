@@ -30,11 +30,13 @@ cd DesignWorks
 Crea el archivo `.env` en la carpeta `infra/`:
 
 ```env
-# Base de Datos
-DB_ROOT_PASSWORD=root_secure_password
-DB_NAME=design_works
-DB_USER=dsing_user
-DB_PASSWORD=FcfR_El21
+# Base de Datos (MariaDB)
+COMPOSE_PROJECT_NAME=design_works
+MARIADB_ROOT_PASSWORD=root
+MARIADB_DATABASE=dam_db
+MARIADB_USER=dam_user
+MARIADB_PASSWORD=dam_pass
+MARIADB_PORT=3306
 
 # Adminer (Gestor de BD)
 ADMINER_PORT=8081
