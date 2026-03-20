@@ -9,6 +9,7 @@ import 'features/home/presentation/home_screen.dart';
 import 'features/perfil/presentation/perfil_screen.dart';
 import 'features/trabajos/presentation/trabajos_list_screen.dart';
 import 'features/trabajos/presentation/trabajo_detail_screen.dart';
+import 'features/trabajos/presentation/trabajo_nuevo_screen.dart'; // ← NUEVO
 
 class App extends ConsumerStatefulWidget {
   const App({super.key});
@@ -57,6 +58,11 @@ class _AppState extends ConsumerState<App> {
               path: '/trabajos',
               builder: (context, state) => const TrabajosListScreen(),
               routes: [
+                // NUEVO: debe ir ANTES de :id
+                GoRoute(
+                  path: 'nuevo',
+                  builder: (context, state) => const TrabajoNuevoScreen(),
+                ),
                 GoRoute(
                   path: ':id',
                   builder: (context, state) {
