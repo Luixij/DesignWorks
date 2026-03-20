@@ -222,12 +222,25 @@ URLs disponibles:
 | Swagger UI | `http://localhost:8080/swagger-ui/index.html` | `http://localhost:8082/swagger-ui/index.html` |
 | API Docs (JSON) | `http://localhost:8080/v3/api-docs` | `http://localhost:8082/v3/api-docs` |
 
-### Credenciales de Usuario Administrador (Seeding)
+### 5. Credenciales de Acceso a la App
 
-Al iniciar la aplicación por primera vez, se crea un usuario administrador:
+Una vez el backend y la base de datos están corriendo, puedes acceder a la app con estos usuarios precargados:
 
-- **Email**: `admin@designworks.com`
-- **Contraseña**: `d.MCmq2des`
+**👨‍💼 Administrador:**
+| Campo | Valor |
+|-------|-------|
+| Email | `admin@designworks.com` |
+| Contraseña | `d.MCmq2des` |
+
+**👨‍🎨 Diseñadores:**
+| Email | Contraseña |
+|-------|------------|
+| `marta@designworks.com` | `Design1234!` |
+| `carlos@designworks.com` | `Design1234!` |
+| `ana@designworks.com` | `Design1234!` |
+| `javi@designworks.com` | `Design1234!` |
+
+> Estos usuarios se crean automáticamente al iniciar la aplicación por primera vez mediante el script `infra/sql/init.sql`.
 
 ---
 
