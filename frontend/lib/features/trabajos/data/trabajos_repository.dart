@@ -6,6 +6,8 @@ import '../data/models/trabajo_list_item.dart';
 import '../data/models/trabajo_detail.dart';
 import '../data/models/historial_estado.dart';
 
+import '../data/models/trabajo_create_request.dart';
+
 class TrabajosRepository {
   final ApiClient _api;
   final SecureStore _secureStore;
@@ -67,6 +69,15 @@ class TrabajosRepository {
       '/trabajos/$trabajoId/comentarios',
       data: {'texto': texto},
     );
+  }
+
+  // POST
+  Future<TrabajoDetail> crearTrabajo(TrabajoCreateRequest request) async {
+    final res = await _dio.post(
+      '/trabajos',
+      data: request.toJson(),
+    );
+    return TrabajoDetail.fromJson(res.data as Map<String, dynamic>);
   }
 
   /// GET /trabajos/{trabajoId}/historial
