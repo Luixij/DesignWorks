@@ -8,6 +8,10 @@ import '../data/models/historial_estado.dart';
 import '../data/trabajos_repository.dart';
 import '../../home/data/home_stats.dart';
 
+
+import '../data/models/trabajo_create_request.dart';
+import '../../perfil/application/user_profile_provider.dart';
+
 final trabajosRepositoryProvider = Provider<TrabajosRepository>((ref) {
   final api = ref.read(apiClientProvider);
   final store = ref.read(secureStoreProvider);
@@ -19,15 +23,8 @@ final trabajosRepositoryProvider = Provider<TrabajosRepository>((ref) {
 /// Devuelve el rol leído desde SecureStore.
 /// Si no hay rol guardado, devuelve null (mejor que inventar uno).
 final userRolProvider = FutureProvider<Rol?>((ref) async {
-  final store = ref.read(secureStoreProvider);
-  final roleStr = await store.getRole();
-
-  if (roleStr == null || roleStr.trim().isEmpty) {
-    return null;
-  }
-
-  //  enums.dart ya tiene toRolOrNull()
-  return roleStr.toRolOrNull();
+  final user = await ref.watch(currentUserRefreshableProvider.future);
+  return user.rol.toRolOrNull();
 });
 
 final trabajosListProvider =
@@ -132,5 +129,16 @@ class TrabajosActions {
     await repo.crearComentario(trabajoId: trabajoId, texto: texto);
 
     ref.invalidate(trabajoDetailProvider(trabajoId));
+  }
+
+  Future<TrabajoDetail> crearTrabajo(TrabajoCreateRequest request) async {
+    final repo = ref.read(trabajosRepositoryProvider);
+    final nuevo = await repo.crearTrabajo(request);
+
+    // Refresca la lista para que aparezca el nuevo trabajo
+    ref.invalidate(trabajosListProvider);
+    ref.invalidate(homeStatsProvider);
+
+    return nuevo;
   }
 }
