@@ -232,6 +232,10 @@ Al iniciar la aplicación por primera vez, se crea un usuario administrador:
 
 ## 📱 Configuración del Frontend (Flutter)
 
+> ℹ️ Si es la primera vez que configuras Flutter o Android Studio en tu equipo, consulta primero el [**Anexo: Guía de Configuración del Entorno Android**](#-anexo-guía-de-configuración-del-entorno-android), donde se explica cómo instalar Flutter, qué SDK Tools son necesarios y cómo activar las opciones de desarrollador en el dispositivo.
+
+> ⚠️ Los comandos de esta sección deben ejecutarse en la **terminal integrada de Android Studio** (`View → Tool Windows → Terminal`), no en una terminal del sistema, para asegurar que el entorno Flutter y las variables del SDK están correctamente cargadas.
+
 ### 1. Navegar a la Carpeta del Frontend
 ```bash
 cd DesignWorks/frontend
