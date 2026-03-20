@@ -214,12 +214,13 @@ mvn "-Dspring-boot.run.profiles=local" spring-boot:run
 - **macOS**: `http://localhost:8080`
 - **Windows**: `http://localhost:8082`
 
-Accede al endpoint de health (si está configurado):
-```
-http://localhost:8080/actuator/health
-```
+URLs disponibles:
 
----
+| Servicio | macOS | Windows |
+|----------|-------|---------|
+| API REST | `http://localhost:8080` | `http://localhost:8082` |
+| Swagger UI | `http://localhost:8080/swagger-ui/index.html` | `http://localhost:8082/swagger-ui/index.html` |
+| API Docs (JSON) | `http://localhost:8080/v3/api-docs` | `http://localhost:8082/v3/api-docs` |
 
 ### Credenciales de Usuario Administrador (Seeding)
 
