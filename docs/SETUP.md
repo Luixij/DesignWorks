@@ -435,5 +435,115 @@ Si encuentras problemas durante la configuración:
 
 ---
 
+## 📎 Anexo: Guía de Configuración del Entorno Android
+
+> ℹ️ **Nota**: Esta sección se incluye a modo de ayuda complementaria, tras la revisión realizada con el tutor. No forma parte del flujo principal del proyecto, pero puede ser útil para quien necesite configurar el entorno Android desde cero o resolver problemas de depuración.
+
+---
+
+### 🛠️ Instalación de Flutter (Windows)
+
+1. Descarga el SDK de Flutter desde: https://docs.flutter.dev/get-started/install/windows
+2. Descomprime el archivo en una ruta **sin espacios ni caracteres especiales**, por ejemplo:
+   ```
+   C:\flutter
+   ```
+   ⚠️ **Evita rutas como** `C:\Users\Tu Nombre\flutter` — los espacios causan problemas con las herramientas del SDK de Android.
+
+3. Añade `C:\flutter\bin` a la variable de entorno `PATH`:
+   - Busca "Variables de entorno" en el menú inicio.
+   - En "Variables del sistema", edita `Path` y añade la ruta.
+
+4. Abre una terminal nueva y verifica la instalación:
+   ```bash
+   flutter doctor
+   ```
+   Revisa los puntos marcados con ❌ o ⚠️ y resuélvelos antes de continuar.
+
+5. Acepta las licencias de Android:
+   ```bash
+   flutter doctor --android-licenses
+   ```
+   Responde `y` a todas las preguntas.
+
+---
+
+### ⚙️ Android SDK Tools necesarios para depuración
+
+Desde Android Studio, ve a **Settings → Languages & Frameworks → Android SDK → SDK Tools** y verifica que están instalados (o instálalos):
+
+| Herramienta | Versión instalada | Para qué sirve |
+|---|---|---|
+| **Android SDK Build-Tools** | 36.0.0 | Compilar y empaquetar la APK |
+| **Android Emulator** | 35.4.9+ | Ejecutar el emulador virtual |
+| **Android Emulator Hypervisor Driver** | 2.2.0 | Aceleración de hardware del emulador (imprescindible en Windows) |
+| **Android SDK Platform-Tools** | 35.0.2+ | Incluye `adb`, necesario para depuración USB y WiFi |
+| **Android SDK Command-line Tools** | 19.0+ | Herramientas de línea de comandos del SDK |
+| **NDK (Side by side)** | cualquiera | Solo necesario si hay código nativo (C/C++) |
+| **CMake** | cualquiera | Solo necesario si hay código nativo (C/C++) |
+
+> ✅ Para este proyecto, los más críticos son **Build-Tools**, **Platform-Tools** (adb), **Emulator** e **Hypervisor Driver**.
+
+> ℹ️ Si aparece "Update Available" en alguna herramienta, puedes actualizarla marcando la casilla y aplicando los cambios. No es obligatorio para que funcione, pero es recomendable.
+
+---
+
+### 📲 Activar Opciones de Desarrollador en Android
+
+Las opciones de desarrollador están ocultas por defecto. Para activarlas:
+
+1. Ve a **Ajustes → Acerca del teléfono** (o "Información del software" según el fabricante).
+2. Localiza el campo **Número de compilación** (Build number).
+3. Pulsa sobre él **7 veces seguidas**.
+4. Se mostrará el mensaje: *"¡Ya eres desarrollador!"*
+5. Las **Opciones para desarrolladores** aparecerán en el menú de Ajustes (a veces dentro de "Sistema" o "Ajustes adicionales").
+
+#### Opciones a activar dentro de "Opciones para desarrolladores"
+
+| Opción | Para qué sirve |
+|---|---|
+| **Depuración USB** | Permite conectar el móvil al PC por cable y ejecutar/depurar apps |
+| **Depuración inalámbrica** | Permite conectar el móvil por WiFi sin cable (Android 11+) |
+| **Instalar vía USB** | Permite instalar APKs directamente desde el PC |
+
+---
+
+### 📡 Configurar Depuración Inalámbrica (WiFi)
+
+Requiere Android 11 o superior y que el móvil y el PC estén en la **misma red WiFi**.
+
+#### Pasos
+
+1. En el móvil, ve a **Opciones para desarrolladores → Depuración inalámbrica** y actívala.
+
+2. Dentro de "Depuración inalámbrica", toca **Vincular dispositivo con código de vinculación**.
+   El móvil mostrará una **IP:puerto** y un **código de 6 dígitos**.
+
+3. En el PC, ejecuta:
+   ```bash
+   adb pair <IP_MÓVIL>:<PUERTO_VINCULACIÓN>
+   # Ejemplo: adb pair 192.168.0.28:35453
+   ```
+   Cuando lo pida, introduce el código de 6 dígitos.
+
+4. Una vez vinculado, conéctate (usa el puerto de conexión, distinto al de vinculación):
+   ```bash
+   adb connect <IP_MÓVIL>:<PUERTO_CONEXIÓN>
+   # Ejemplo: adb connect 192.168.0.28:42587
+   ```
+
+5. Verifica que el dispositivo aparece:
+   ```bash
+   adb devices
+   ```
+
+6. Ejecuta la app Flutter apuntando a la IP del PC en la red local:
+   ```bash
+   flutter run --dart-define=API_BASE_URL=http://192.168.0.15:8082
+   ```
+   > Reemplaza `192.168.0.15` con la IP real de tu equipo (`ipconfig` en Windows, `ifconfig` en macOS/Linux).
+
+---
+
 **Última actualización**: Marzo 2026  
 **Autor**: Luis Imaicela
