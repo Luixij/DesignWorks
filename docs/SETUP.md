@@ -226,7 +226,7 @@ URLs disponibles:
 
 ### Credenciales de Spring (configuración interna)
 
-Usuario técnico utilizado por Spring para operaciones internas:
+Usuario técnico utilizado por Spring para operaciones internas, definido en `backend/backend/src/main/resources/application-dev.yml`:
 
 - **Email**: `admin@designworks.com`
 - **Contraseña**: `d.MCmq2des`
