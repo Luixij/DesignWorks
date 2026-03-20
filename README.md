@@ -12,9 +12,9 @@ El sistema se encuentra **completamente funcional** y listo para la fase final d
 Backend y frontend están completamente integrados y operativos.
 
 [![Estado](https://img.shields.io/badge/Estado-Funcional-success)](https://github.com/tuusuario/designworks)
-[![Backend](https://img.shields.io/badge/Backend-80%25-blue)](docs/STATUS.md)
-[![Frontend](https://img.shields.io/badge/Frontend-100%25-success)](docs/STATUS.md)
-[![Tests](https://img.shields.io/badge/Tests-0%25-red)](docs/STATUS.md)
+[![Backend](https://img.shields.io/badge/Backend-90%25-blue)](docs/STATUS.md)
+[![Frontend](https://img.shields.io/badge/Frontend-85%25-success)](docs/STATUS.md)
+[![Tests](https://img.shields.io/badge/Tests-Manual-yellow)](docs/STATUS.md)
 
 ## 📋 Descripción
 
@@ -28,8 +28,8 @@ Backend y frontend están completamente integrados y operativos.
 **Progreso Global: 75%**
 
 ```
-✅ Backend:           ████████████████░░░░ 80% - FUNCIONAL
-✅ Frontend:          ███████████████░░░░░ 75% - FUNCIONAL
+✅ Backend:           ██████████████████░░ 90% - FUNCIONAL + SWAGGER
+✅ Frontend:          █████████████████░░░ 85% - FUNCIONAL
 ✅ UI/UX (Figma):     ████████████████████ 100% - COMPLETO
 ✅ UI Implementación: ████████████████████ 100% - COMPLETO
 ❌ Tests:             ░░░░░░░░░░░░░░░░░░░░ 0% - PENDIENTE
@@ -169,15 +169,17 @@ DesignWorks/
 - [x] Navegación completa
 - [x] Gestión de estado global (Riverpod)
 - [x] Almacenamiento seguro de tokens
+- [x] Crear nuevo trabajo (solo ADMIN)
+- [x] Control de visibilidad por rol en tiempo real
+- [x] Barra de navegación fija con teclado
+- [x] Diálogo de confirmación al salir sin guardar
 
 ### 🔄 En Desarrollo
 - Tests unitarios e integración
-- Documentación Swagger/OpenAPI
 - Animaciones y transiciones
 
 ### ⏳ Pendiente (Entrega Final)
 - [ ] Tests unitarios e integración
-- [ ] Documentación Swagger
 - [ ] Optimizaciones de rendimiento
 
 ## 🎯 Roles del Sistema
@@ -249,8 +251,8 @@ flutter test
 | Servicio | macOS | Windows |
 |----------|-------|---------|
 | Backend API | http://localhost:8080 | http://localhost:8082 |
+| **Swagger UI** | **http://localhost:8080/swagger-ui/index.html** | **http://localhost:8082/swagger-ui/index.html** |
 | Adminer (BD) | http://localhost:8081 | http://localhost:8081 |
-| MariaDB | localhost:3306 | localhost:3306 |
 
 ### Credenciales de Desarrollo
 
