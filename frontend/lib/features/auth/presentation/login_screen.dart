@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../auth/data/auth_repository.dart';
 import '../../auth/data/login_request.dart';
 import '../../../core/providers.dart';
+import '../../trabajos/application/trabajos_providers.dart';
 
 // ─────────────────────────────────────────────────────────────
 // RUTA DEL LOGO — cambia este valor por la ruta de tu archivo
