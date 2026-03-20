@@ -31,16 +31,31 @@ class AppShell extends StatelessWidget {
     final location = GoRouterState.of(context).uri.toString();
     final index = _indexFromLocation(location);
 
+    // MediaQuery sin el inset del teclado para que la barra no se mueva
+    final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
+
     return Scaffold(
+      // resizeToAvoidBottomInset: false evita que el Scaffold
+      // empuje el contenido cuando aparece el teclado
+      resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0xFFF4F4F2),
       body: Stack(
         children: [
-          // Contenido de la pantalla
-          child,
+          // Contenido de la pantalla — le damos padding inferior
+          // para que el contenido no quede detrás de la barra
+          Positioned.fill(
+            child: MediaQuery(
+              // Restauramos el inset del teclado para que los campos
+              // de texto sigan siendo accesibles dentro del contenido
+              data: MediaQuery.of(context),
+              child: child,
+            ),
+          ),
 
-          // Píldora flotante sobre el contenido, sin fondo
+          // Píldora flotante — anclada al bottom real, ignora el teclado
           Positioned(
-            bottom: 12,
+            bottom: 12 + bottomPadding - bottomPadding, // siempre 12px desde el borde
             left: 60,
             right: 60,
             child: Container(
@@ -59,9 +74,9 @@ class AppShell extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _NavItem(icon: Icons.home_rounded, selected: index == 0, onTap: () => _onTap(context, 0)),
+                  _NavItem(icon: Icons.home_rounded,      selected: index == 0, onTap: () => _onTap(context, 0)),
                   _NavItem(icon: Icons.check_box_rounded, selected: index == 1, onTap: () => _onTap(context, 1)),
-                  _NavItem(icon: Icons.person_rounded, selected: index == 2, onTap: () => _onTap(context, 2)),
+                  _NavItem(icon: Icons.person_rounded,    selected: index == 2, onTap: () => _onTap(context, 2)),
                 ],
               ),
             ),
