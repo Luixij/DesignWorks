@@ -40,11 +40,10 @@ infra/.env
 **/logs/
 
 ### VS Code ###
-.vscode/*
-!.vscode/launch.example.json
-
-# VS Code (en cualquier carpeta)
-**/.vscode/
+**/.vscode/*
+!backend/backend/.vscode/
+!backend/backend/.vscode/launch.json
+!backend/backend/.vscode/launch.example.json
 
 # Config local Spring (Windows)
 **/application-local.yml
