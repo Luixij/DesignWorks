@@ -222,6 +222,17 @@ URLs disponibles:
 | Swagger UI | `http://localhost:8080/swagger-ui/index.html` | `http://localhost:8082/swagger-ui/index.html` |
 | API Docs (JSON) | `http://localhost:8080/v3/api-docs` | `http://localhost:8082/v3/api-docs` |
 
+---
+
+### Credenciales de Spring (configuración interna)
+
+Usuario técnico utilizado por Spring para operaciones internas:
+
+- **Email**: `admin@designworks.com`
+- **Contraseña**: `d.MCmq2des`
+
+---
+
 ### 5. Credenciales de Acceso a la App
 
 Una vez el backend y la base de datos están corriendo, puedes acceder a la app con estos usuarios precargados:
@@ -230,7 +241,7 @@ Una vez el backend y la base de datos están corriendo, puedes acceder a la app 
 | Campo | Valor |
 |-------|-------|
 | Email | `admin@designworks.com` |
-| Contraseña | `d.MCmq2des` |
+| Contraseña | `Admin1234!` |
 
 **👨‍🎨 Diseñadores:**
 | Email | Contraseña |
@@ -240,7 +251,8 @@ Una vez el backend y la base de datos están corriendo, puedes acceder a la app 
 | `ana@designworks.com` | `Design1234!` |
 | `javi@designworks.com` | `Design1234!` |
 
-> Estos usuarios se crean automáticamente al iniciar la aplicación por primera vez mediante el script `infra/sql/init.sql`.
+> Estos usuarios se crean automáticamente al iniciar la aplicación mediante el script `infra/sql/init.sql`.
+
 
 ---
 
