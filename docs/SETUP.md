@@ -234,7 +234,7 @@ Al iniciar la aplicación por primera vez, se crea un usuario administrador:
 
 ### 1. Navegar a la Carpeta del Frontend
 ```bash
-cd frontend
+cd DesignWorks/frontend
 ```
 
 ### 2. Instalar Dependencias
