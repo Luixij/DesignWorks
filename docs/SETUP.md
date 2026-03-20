@@ -11,7 +11,7 @@
 - **Git**: Para control de versiones
 
 ### IDEs Recomendados
-- **Backend**: IntelliJ IDEA / Visual Studio Code
+- **Backend**: Visual Studio Code *(recomendado)* / IntelliJ IDEA
 - **Frontend**: Android Studio / Visual Studio Code
 - **Base de Datos**: Adminer (incluido en Docker) o DBeaver
 
@@ -32,10 +32,10 @@ Crea el archivo `.env` en la carpeta `infra/`:
 ```env
 # Base de Datos (MariaDB)
 COMPOSE_PROJECT_NAME=design_works
-MARIADB_ROOT_PASSWORD=root
-MARIADB_DATABASE=dam_db
-MARIADB_USER=dam_user
-MARIADB_PASSWORD=dam_pass
+MARIADB_ROOT_PASSWORD=cDa-20Jetl.
+MARIADB_DATABASE=design_works
+MARIADB_USER=dsing_user
+MARIADB_PASSWORD=FcfR_El21
 MARIADB_PORT=3306
 
 # Adminer (Gestor de BD)
@@ -83,12 +83,11 @@ SELECT * FROM trabajos ORDER BY id;
 
 ## ⚙️ Configuración del Backend (Spring Boot)
 
-### 1. Navegar a la Carpeta del Backend
-## ⚠️ Estructura real de carpetas del backend
+### ⚠️ Estructura real de carpetas del backend
 
 En este proyecto, el backend Maven/Spring Boot **no está directamente en `backend/`**, sino en:
 
-```text
+```
 DesignWorks/
 └── backend/
     └── backend/
@@ -97,71 +96,102 @@ DesignWorks/
         ├── mvnw.cmd
         ├── src/
         └── ...
+```
 
+Para ejecutar Spring Boot, tests o cualquier comando Maven, debes situarte en la carpeta que **contiene directamente `pom.xml`**, es decir `backend/backend/`.
 
-Eso significa que para ejecutar Spring Boot, tests o cualquier comando Maven, debes situarte en la carpeta que **contiene directamente `pom.xml`**.
+---
 
-### 1. Navegar a la Carpeta Correcta del Backend
+### ▶️ Método Recomendado: Visual Studio Code
 
-#### macOS / Linux:
+> ✅ **Este es el método recomendado** para ejecutar el backend. No requiere configurar variables de entorno manualmente ni usar la terminal.
+
+#### Pasos
+
+1. Abre Visual Studio Code directamente en la carpeta:
+   ```
+   backend/backend
+   ```
+   ⚠️ **Importante**: Debes abrir exactamente esta carpeta, no la raíz del proyecto.
+
+2. Pulsa `Ctrl + Shift + D` para abrir el panel de ejecución.
+
+3. Selecciona la configuración **`Spring Boot (dev)`** en el menú desplegable.
+
+4. Pulsa el botón ▶️ **(Run)**.
+
+El backend se iniciará automáticamente con todas las variables de entorno configuradas a través del archivo `launch.json` incluido en el repositorio:
+
+```
+backend/backend/.vscode/launch.json
+```
+
+> **Nota**: El archivo `launch.json` está incluido en el repositorio para facilitar la ejecución del proyecto sin configuración manual.
+
+#### Resultado
+
+- Backend ejecutándose en el puerto correspondiente a tu sistema operativo.
+- Variables de entorno configuradas automáticamente.
+- Sin necesidad de usar la terminal.
+
+---
+
+### 🔧 Método Alternativo: Terminal
+
+Si prefieres usar la terminal, sigue estos pasos:
+
+#### 1. Navegar a la Carpeta Correcta del Backend
+
+**macOS / Linux:**
 ```bash
 cd backend/backend
 ```
 
-#### Windows (PowerShell):
+**Windows (PowerShell):**
 ```powershell
 cd .\backend\backend
 ```
 
-### 2. Verificar que Estás en la Carpeta Correcta
+#### 2. Verificar que Estás en la Carpeta Correcta
 
-#### macOS / Linux:
+**macOS / Linux:**
 ```bash
 pwd
 ls
 ```
 
-#### Windows (PowerShell):
+**Windows (PowerShell):**
 ```powershell
 Get-Location
 dir
 Test-Path .\pom.xml
 ```
 
-Debes ver archivos como:
-- `pom.xml`
-- `mvnw`
-- `mvnw.cmd`
-- `src`
+Debes ver archivos como `pom.xml`, `mvnw`, `mvnw.cmd` y `src/`. Si `pom.xml` no aparece, estás un nivel por encima y Maven dará errores como:
 
-Si `pom.xml` **no aparece**, estás un nivel por encima y Maven dará errores como:
-
-```text
+```
 No plugin found for prefix 'spring-boot'
 ```
 
+#### 3. Configurar Variables de Entorno
 
-### 2. Configurar Variables de Entorno
-
-#### En macOS / Linux:
+**macOS / Linux:**
 ```bash
 export DB_URL=jdbc:mariadb://127.0.0.1:3306/design_works
 export DB_USER=dsing_user
 export DB_PASS=FcfR_El21
 ```
 
-#### En Windows (PowerShell):
+**Windows (PowerShell):**
 ```powershell
 $env:DB_URL="jdbc:mariadb://127.0.0.1:3306/design_works"
 $env:DB_USER="dsing_user"
 $env:DB_PASS="FcfR_El21"
 ```
 
-### 3. Ejecutar Spring Boot
+#### 4. Ejecutar Spring Boot
 
-#### Método 1: Maven Wrapper (Recomendado)
-
-**macOS/Linux:**
+**macOS / Linux:**
 ```bash
 ./mvnw spring-boot:run
 ```
@@ -171,14 +201,16 @@ $env:DB_PASS="FcfR_El21"
 .\mvnw.cmd spring-boot:run
 ```
 
-#### Método 2: Con Perfil Específico
+También es posible ejecutar con un perfil específico:
 ```bash
 mvn "-Dspring-boot.run.profiles=local" spring-boot:run
 ```
 
+---
+
 ### 4. Verificar que el Backend Está Corriendo
 
-**⚠️ IMPORTANTE: El puerto varía según el sistema operativo:**
+**⚠️ El puerto varía según el sistema operativo:**
 - **macOS**: `http://localhost:8080`
 - **Windows**: `http://localhost:8082`
 
@@ -187,33 +219,10 @@ Accede al endpoint de health (si está configurado):
 http://localhost:8080/actuator/health
 ```
 
-### 5. Configuración con Visual Studio Code
-
-Si usas VS Code, crea el archivo `.vscode/launch.json`:
-
-```json
-{
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "type": "java",
-      "name": "Spring Boot - Backend",
-      "request": "launch",
-      "mainClass": "com.designworks.BackendApplication",
-      "projectName": "backend",
-      "env": {
-        "DB_URL": "jdbc:mariadb://127.0.0.1:3306/design_works",
-        "DB_USER": "dsing_user",
-        "DB_PASS": "FcfR_El21"
-      }
-    }
-  ]
-}
-```
-
-> **Nota**: No se incluye `launch.json` en el repositorio por seguridad. Se proporciona `launch.example.json` como plantilla.
+---
 
 ### Credenciales de Usuario Administrador (Seeding)
+
 Al iniciar la aplicación por primera vez, se crea un usuario administrador:
 
 - **Email**: `admin@designworks.com`
@@ -296,7 +305,7 @@ flutter run --dart-define=API_BASE_URL=http://192.168.0.15:8082
 
 #### Build de APK Release
 
-**Para probar en dispositivos físicos sin depuración:**
+Para probar en dispositivos físicos sin depuración:
 
 ```bash
 flutter build apk --release --dart-define=API_BASE_URL=http://192.168.0.17:8082
@@ -344,7 +353,7 @@ git log --oneline --max-count=5
 
 ### Backend
 ```bash
-cd backend
+cd backend/backend
 ./mvnw test
 ```
 
@@ -409,8 +418,9 @@ taskkill /PID [PID_NUMBER] /F
 
 ## 🔐 Seguridad
 
-**⚠️ IMPORTANTE**: 
-- **NUNCA** subas archivos `.env` o `launch.json` al repositorio.
+**⚠️ IMPORTANTE**:
+- **NUNCA** subas archivos `.env`.
+- El archivo `launch.json` está incluido para facilitar el entorno de desarrollo.
 - Las credenciales mostradas aquí son **solo para desarrollo local**.
 - Para producción, usar variables de entorno seguras y secretos gestionados.
 
@@ -425,5 +435,5 @@ Si encuentras problemas durante la configuración:
 
 ---
 
-**Última actualización**: Febrero 2026  
+**Última actualización**: Marzo 2026  
 **Autor**: Luis Imaicela
