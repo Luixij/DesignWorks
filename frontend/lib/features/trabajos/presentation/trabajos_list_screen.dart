@@ -5,8 +5,9 @@ import '../application/trabajos_providers.dart';
 import '../data/models/enums.dart';
 import '../data/models/trabajo_list_item.dart';
 
-// ── Paleta de colores por estado (compartida con home_screen) ─────────────────
-// bg = fondo del badge/chip activo, fg = texto sobre ese fondo
+import '../../perfil/application/user_profile_provider.dart';
+
+// ── Paleta de colores por estado ──────────────────────────────────────────────
 const _estadoColors = {
   EstadoTrabajo.EN_PROGRESO: (
   bg: Color(0xFFB5D5A8),
@@ -36,9 +37,9 @@ const _estadoColors = {
 };
 
 const _kBgColor = Color(0xFFF4F4F2);
+const _kPrimary = Color(0xFF2D3142);
 const _kPadH = 20.0;
 
-// Provider para el filtro seleccionado
 final estadoFiltroProvider = StateProvider<EstadoTrabajo?>((ref) => null);
 
 class TrabajosListScreen extends ConsumerWidget {
@@ -49,9 +50,14 @@ class TrabajosListScreen extends ConsumerWidget {
     final asyncList = ref.watch(trabajosListProvider);
     final filtroSeleccionado = ref.watch(estadoFiltroProvider);
 
-    return ColoredBox(
-      color: _kBgColor,
-      child: SafeArea(
+    final asyncRol = ref.watch(currentUserRefreshableProvider);
+    // TEST ROL a imprimir
+    //asyncRol.whenData((rol) => print('🔑 Rol en pantalla: $rol')); // ← añade esta línea
+
+
+    return Scaffold(
+      backgroundColor: _kBgColor,
+      body: SafeArea(
         child: asyncList.when(
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (e, _) => Center(
@@ -80,17 +86,46 @@ class TrabajosListScreen extends ConsumerWidget {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // ── Header ──────────────────────────────────────────────────
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(_kPadH, 20, _kPadH, 0),
-                  child: Text(
-                    'Proyectos',
-                    style: TextStyle(
-                      fontSize: 38,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF2D3142),
-                      letterSpacing: -0.5,
-                    ),
+                // ── Header: título + botón nuevo ────────────────────────────
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(_kPadH, 20, _kPadH, 0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Expanded(
+                        child: Text(
+                          'Proyectos',
+                          style: TextStyle(
+                            fontSize: 38,
+                            fontWeight: FontWeight.bold,
+                            color: _kPrimary,
+                            letterSpacing: -0.5,
+                          ),
+                        ),
+                      ),
+                      // Botón + solo para ADMIN
+                      asyncRol.maybeWhen(
+                        data: (user) => user.rol == 'ADMIN'
+                            ? GestureDetector(
+                          onTap: () => context.push('/trabajos/nuevo'),
+                          child: Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: _kPrimary,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Icon(
+                              Icons.add,
+                              color: Colors.white,
+                              size: 22,
+                            ),
+                          ),
+                        )
+                            : const SizedBox.shrink(),
+                        orElse: () => const SizedBox.shrink(),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -100,27 +135,28 @@ class TrabajosListScreen extends ConsumerWidget {
                   height: 38,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(horizontal: _kPadH),
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: _kPadH),
                     children: [
                       _FilterChip(
                         estado: EstadoTrabajo.EN_PROGRESO,
                         filtroActual: filtroSeleccionado,
-                        onTap: () => _toggleFiltro(
-                            ref, filtroSeleccionado, EstadoTrabajo.EN_PROGRESO),
+                        onTap: () => _toggleFiltro(ref, filtroSeleccionado,
+                            EstadoTrabajo.EN_PROGRESO),
                       ),
                       const SizedBox(width: 8),
                       _FilterChip(
                         estado: EstadoTrabajo.EN_REVISION,
                         filtroActual: filtroSeleccionado,
-                        onTap: () => _toggleFiltro(
-                            ref, filtroSeleccionado, EstadoTrabajo.EN_REVISION),
+                        onTap: () => _toggleFiltro(ref, filtroSeleccionado,
+                            EstadoTrabajo.EN_REVISION),
                       ),
                       const SizedBox(width: 8),
                       _FilterChip(
                         estado: EstadoTrabajo.ENTREGADO,
                         filtroActual: filtroSeleccionado,
-                        onTap: () => _toggleFiltro(
-                            ref, filtroSeleccionado, EstadoTrabajo.ENTREGADO),
+                        onTap: () => _toggleFiltro(ref, filtroSeleccionado,
+                            EstadoTrabajo.ENTREGADO),
                       ),
                       const SizedBox(width: 8),
                       _FilterChip(
@@ -133,8 +169,8 @@ class TrabajosListScreen extends ConsumerWidget {
                       _FilterChip(
                         estado: EstadoTrabajo.CANCELADO,
                         filtroActual: filtroSeleccionado,
-                        onTap: () => _toggleFiltro(
-                            ref, filtroSeleccionado, EstadoTrabajo.CANCELADO),
+                        onTap: () => _toggleFiltro(ref, filtroSeleccionado,
+                            EstadoTrabajo.CANCELADO),
                       ),
                     ],
                   ),
@@ -163,7 +199,8 @@ class TrabajosListScreen extends ConsumerWidget {
                     ),
                   )
                       : ListView.separated(
-                    padding: const EdgeInsets.fromLTRB(_kPadH, 0, _kPadH, 110),
+                    padding: const EdgeInsets.fromLTRB(
+                        _kPadH, 0, _kPadH, 110),
                     itemCount: listaFiltrada.length,
                     separatorBuilder: (_, __) =>
                     const SizedBox(height: 16),
@@ -223,7 +260,7 @@ class _FilterChip extends StatelessWidget {
           style: TextStyle(
             fontSize: 13,
             fontWeight: FontWeight.w500,
-            color: selected ? colors.fg : const Color(0xFF2D3142),
+            color: selected ? colors.fg : _kPrimary,
           ),
         ),
       ),
@@ -258,7 +295,6 @@ class _TrabajoCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ── Título + flecha ────────────────────────────────────────────
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -268,22 +304,16 @@ class _TrabajoCard extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF2D3142),
+                      color: _kPrimary,
                       height: 1.25,
                     ),
                   ),
                 ),
                 const SizedBox(width: 8),
-                const Icon(
-                  Icons.arrow_outward,
-                  size: 20,
-                  color: Color(0xFF2D3142),
-                ),
+                const Icon(Icons.arrow_outward, size: 20, color: _kPrimary),
               ],
             ),
             const SizedBox(height: 12),
-
-            // ── Cliente ────────────────────────────────────────────────────
             const Text(
               'Cliente',
               style: TextStyle(
@@ -299,29 +329,22 @@ class _TrabajoCard extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w500,
-                color: Color(0xFF2D3142),
+                color: _kPrimary,
               ),
             ),
             const SizedBox(height: 16),
-
-            // ── Fecha + Badge estado ───────────────────────────────────────
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   children: [
-                    const Icon(
-                      Icons.calendar_today_outlined,
-                      size: 14,
-                      color: Color(0xFF8A8FA3),
-                    ),
+                    const Icon(Icons.calendar_today_outlined,
+                        size: 14, color: Color(0xFF8A8FA3)),
                     const SizedBox(width: 6),
                     Text(
                       _formatFecha(trabajo.fechaInicio),
                       style: const TextStyle(
-                        fontSize: 13,
-                        color: Color(0xFF8A8FA3),
-                      ),
+                          fontSize: 13, color: Color(0xFF8A8FA3)),
                     ),
                   ],
                 ),
