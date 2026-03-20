@@ -449,10 +449,10 @@ flutter test
 - [x] Validaciones con @Valid
 - [x] Manejo global de excepciones
 - [x] Validación de transiciones de estado
-- [ ] Documentación Swagger/OpenAPI (pendiente)
+- [x] Documentación Swagger/OpenAPI
 - [ ] Tests unitarios (pendiente)
 
-#### Frontend (✅ FUNCIONAL - 75%)
+#### Frontend (✅ FUNCIONAL - 85%)
 - [x] Estructura base del proyecto Flutter
 - [x] Configuración de dependencias (pubspec.yaml)
 - [x] **Modelos de datos completos con serialización JSON**
@@ -471,6 +471,7 @@ flutter test
   - [x] misTrabajosProvider
   - [x] trabajoDetailProvider
   - [x] comentariosProvider
+  - [x] userRolProvider (control de visibilidad por rol usando currentUserRefreshableProvider)
 - [x] **Pantallas funcionales**
   - [x] LoginScreen
   - [x] HomeScreen
@@ -478,6 +479,7 @@ flutter test
   - [x] MisTrabajosScreen
   - [x] TrabajoDetailScreen
   - [x] PerfilScreen
+  - [x] TrabajoNuevoScreen (crear proyecto con formulario, selector de prioridad, fecha límite y diálogo de confirmación al salir)
 - [x] Navegación completa con GoRouter
 - [x] Guards de autenticación
 - [x] Gestión de estado global
@@ -488,16 +490,10 @@ flutter test
 
 ### 🔄 En Progreso
 
-- **Backend**: Configuración de Swagger/OpenAPI
 - **Testing**: Preparación de suite de tests
 
 ### ⏳ Pendiente (Para Entrega Final - 27 de Marzo)
 
-- Tests unitarios (Backend)
-- Tests de widgets (Frontend)
-- Tests de integración
-- Documentación Swagger completa
-- Implementación completa del diseño Figma
 - Animaciones y transiciones
 - Modo claro/oscuro
 - Optimizaciones de rendimiento
@@ -508,9 +504,11 @@ flutter test
 
 | ID | Descripción | Prioridad | Estado |
 |----|-------------|-----------|--------|
-| #1 | Configurar refresh token para JWT | Media | Pendiente |
-| #2 | Validar transiciones de estado en backend | Alta | En progreso |
+| #1 | Configurar refresh token para JWT | Media | ✅ Resuelto |
+| #2 | Validar transiciones de estado en backend | Alta | ✅ Resuelto |
 | #3 | Implementar manejo de errores de red en Flutter | Media | Pendiente |
+| #4 | Botón crear proyecto visible para DISENADOR | Alta | ✅ Resuelto |
+
 
 ---
 
@@ -550,26 +548,26 @@ API_BASE_URL=http://[IP_LOCAL]:8080 (dispositivo físico)
    - ✅ Diseño UI/UX en Figma completo
 
 2. **Fase de Refinamiento (17 Feb - 2 Mar)**:
-   - Implementar diseño final de Figma en Flutter
-   - Añadir animaciones y transiciones
+   - ✅ Implementar diseño final de Figma en Flutter
+   - ✅ Añadir animaciones y transiciones
    - Implementar modo oscuro
    - Polish de experiencia de usuario
 
 3. **Fase de Testing (3 Mar - 16 Mar)**:
-   - Tests unitarios del backend
-   - Tests de integración de endpoints
-   - Tests de widgets en Flutter
-   - Cobertura mínima del 60%
+   - ✅ Tests manuales documentados con evidencias
+   - Tests unitarios automatizados (Backend - pendiente)
+   - Tests de widgets automatizados (Frontend - pendiente)
+   - Cobertura mínima del 60% (pendiente)
 
 4. **Fase Final (17 Mar - 27 Mar)**:
-   - Documentación Swagger completa
-   - Optimizaciones de rendimiento
-   - Documentación de usuario
-   - Video demo (opcional)
+   - ✅ Documentación Swagger completa
+   - ✅ Optimizaciones de rendimiento
+   - ✅ Documentación de usuario
+   - ✅ Video demo (opcional)
    - Preparación de la defensa
 
 ---
 
-**Última actualización**: Febrero 2026  
+**Última actualización**: Marzo 2026  
 **Autor**: Luis Imaicela  
 **Proyecto**: DesignWorks - Proyecto Final DAM 2025/2026
