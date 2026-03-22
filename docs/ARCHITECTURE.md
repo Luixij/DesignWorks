@@ -589,6 +589,6 @@ flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8080
 
 ---
 
-**Última actualización**: Marzo 2026  
+**Última actualización**: 22 Marzo 2026  
 **Autor**: Luis Imaicela  
 **Proyecto**: DesignWorks - Proyecto Final DAM
