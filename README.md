@@ -293,8 +293,8 @@ flutter test
 | Aceptación | 25-29 Oct 2025 | ✅ Completado |
 | Fase de análisis | 30 Oct - 15 Dic 2025 | ✅ Completado |
 | Fase de diseño | 16 Dic - 29 Ene 2026 | ✅ Completado |
-| **Entrega intermedia** | **16 Feb 2026** | ✅ **COMPLETADA** |
-| Desarrollo avanzado | 17 Feb - 26 Mar 2026 | 🔄 En progreso |
+| **Entrega intermedia** | **16 Feb 2026** | ✅ Completado |
+| Desarrollo avanzado | 17 Feb - 26 Mar 2026 | ✅ Completado |
 | **Entrega final** | **27 Mar 2026** | ⏳ Pendiente |
 | Validación | 1-3 Abr 2026 | ⏳ Pendiente |
 | Defensa | 7-16 Abr 2026 | ⏳ Pendiente |
