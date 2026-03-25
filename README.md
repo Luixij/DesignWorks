@@ -308,5 +308,5 @@ Este proyecto es un trabajo académico desarrollado para el módulo de Proyecto 
 
 ---
 
-**Última actualización**: 5 de marzo de 2026  
-**Versión**: 1.0 (Entrega Intermedia)
+**Última actualización**: 25 de marzo de 2026  
+**Versión**: 1.0 (Entrega Final)
