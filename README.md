@@ -124,8 +124,21 @@ DesignWorks/
     ├── ARCHITECTURE.md             # Arquitectura
     ├── DATABASE.md                 # Diseño de BD
     ├── API.md                      # Endpoints REST
-    ├── imaicela_*_ANALISIS.pdf     # Fase análisis
-    └── imaicela_*_DISENO.pdf       # Fase diseño
+    │
+    ├── fase/                       # Documentación de fases
+    │   ├── imaicela_*_ANALISIS.pdf # Fase análisis
+    │   └── imaicela_*_DISENO.pdf   # Fase diseño
+    │
+    ├── entregables/                # Entregables finales
+    │   ├── *_MEMORIA.pdf
+    │   ├── *_MANUAL_USO.pdf
+    │   └── *_PLAN_PRUEBAS.pdf
+    │
+    └── test/                       # Documentación de testing
+        ├── TESTING.md
+        ├── TEST_RESULTS.md
+        ├── TRAZABILIDAD.md
+        └── evidencias/
 ```
 
 ## 📚 Documentación
