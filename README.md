@@ -20,7 +20,7 @@ Backend y frontend están completamente integrados y operativos.
 
 **DesignWorks** es una aplicación full-stack que permite a estudios de diseño gráfico gestionar sus proyectos de forma centralizada. Incluye seguimiento de estados, asignación de equipos, comunicación interna y auditoría completa de cambios.
 
-### Estado del Proyecto - Febrero 2026
+### Estado del Proyecto - Marzo 2026
 
 **Entrega Intermedia (16 Feb)**: Backend y Frontend completamente funcionales  
 **Entrega Final (27 Mar)**: Proyecto completo con tests y diseño final
@@ -89,15 +89,16 @@ Ver [docs/SETUP.md](docs/SETUP.md) para instrucciones paso a paso.
 ```
 DesignWorks/
 ├── backend/              # API REST - Spring Boot
-│   ├── src/main/java/
-│   │   └── com/designworks/
-│   │       ├── controllers/    ✅ Completo
-│   │       ├── services/       ✅ Completo
-│   │       ├── repositories/   ✅ Completo
-│   │       ├── entities/       ✅ Completo
-│   │       ├── security/       ✅ JWT implementado
-│   │       └── dto/            ✅ Completo
-│   └── pom.xml
+│   └── backend/
+│       ├── src/main/java/
+│       │   └── com/designworks/
+│       │       ├── controllers/    ✅ Completo
+│       │       ├── services/       ✅ Completo
+│       │       ├── repositories/   ✅ Completo
+│       │       ├── entities/       ✅ Completo
+│       │       ├── security/       ✅ JWT implementado
+│       │       └── dto/            ✅ Completo
+│       └── pom.xml
 │
 ├── frontend/             # App móvil - Flutter
 │   ├── lib/
