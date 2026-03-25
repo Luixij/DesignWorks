@@ -10,7 +10,7 @@ Se ha preparado una demostración completa del funcionamiento de la aplicación:
 ⚠️ **Nota**: El acceso al video está restringido únicamente a cuentas de Gmail bajo el dominio de **Educación Navarra**.
 
 ℹ️ **Información adicional**:  
-Para testear la aplicación en local, se recomienda el uso de un **dispositivo físico conectado por cable USB** y con el **modo desarrollador activado**, tal y como se explica en detalle en la guía de configuración :contentReference[oaicite:0]{index=0}.  
+Para testear la aplicación en local, se recomienda el uso de un **dispositivo físico conectado por cable USB** y con el **modo desarrollador activado**, tal y como se explica en detalle en la **[guía de configuración](https://github.com/Luixij/DesignWorks/blob/main/docs/SETUP.md)**.
 
 En el video demo se muestra la ejecución mediante **depuración inalámbrica por WiFi**, como alternativa al uso de cable.
 
