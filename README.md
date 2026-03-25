@@ -57,32 +57,16 @@ Backend y frontend están completamente integrados y operativos.
 
 ## 🚀 Quick Start
 
-### Opción 1: Docker (Recomendado)
+Actualmente, el proyecto **no está desplegado en producción**, ya que todavía no se ha contratado un VPS.  
+Por este motivo, las pruebas y validaciones de la aplicación se realizan **en entorno local**.
 
-```bash
-# 1. Clonar repositorio
-git clone [URL]
-cd DesignWorks
+### Entorno recomendado para pruebas
 
-# 2. Iniciar infraestructura
-cd infra
-docker-compose up -d
+Para ejecutar correctamente el proyecto y disponer de toda la configuración necesaria, se recomienda seguir la **configuración detallada**, donde se explica el proceso completo paso a paso tanto para backend como para frontend, base de datos e infraestructura local.
 
-# 3. Iniciar backend (en otra terminal)
-cd ../backend
-export DB_URL=jdbc:mariadb://127.0.0.1:3306/design_works
-export DB_USER=dsing_user
-export DB_PASS=FcfR_El21
-./mvnw spring-boot:run
+### Configuración Detallada
 
-# 4. Iniciar frontend (en otra terminal)
-cd ../frontend
-flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8080
-```
-
-### Opción 2: Configuración Detallada
-
-Ver [docs/SETUP.md](docs/SETUP.md) para instrucciones paso a paso.
+Ver **[docs/SETUP.md](docs/SETUP.md)** para las instrucciones completas de instalación, configuración y puesta en marcha en local.
 
 ## 📁 Estructura del Proyecto
 
