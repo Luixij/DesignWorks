@@ -10,7 +10,9 @@
 
 ## 📊 Resumen Ejecutivo
 
-El proyecto **DesignWorks** se encuentra en la fase de desarrollo inicial, habiendo completado satisfactoriamente las fases de análisis y diseño. La infraestructura base está configurada y operativa, y se está avanzando en la implementación tanto del backend (Spring Boot) como del frontend (Flutter).
+El proyecto **DesignWorks** se encuentra en una fase avanzada de desarrollo, con todas sus funcionalidades principales implementadas y operativas. Las fases de análisis, diseño e implementación han sido completadas, disponiendo de un sistema plenamente funcional con backend y frontend integrados.
+
+En este punto, el esfuerzo se centra en la fase final de validación, principalmente en la ampliación de la cobertura de tests para garantizar la calidad y robustez del sistema antes de la entrega final.
 
 ### Progreso Global: ~75%
 
@@ -20,7 +22,7 @@ Diseño         ████████████████████ 100
 Infraestructura ███████████████████░  95%
 Backend        ███████████████████░  95%
 Frontend       ████████████████████ 100%
-Tests          ░░░░░░░░░░░░░░░░░░░░   0%
+Tests          ██████████░░░░░░░░░░  50%
 UI/UX Final    ████████████████████ 100% 
 ```
 
@@ -185,9 +187,6 @@ UI/UX Final    ████████████████████ 100%
 - [x] Validación de transiciones de estado
 
 #### Pendiente
-- [ ] Documentación Swagger/OpenAPI
-- [ ] Tests unitarios (servicios)
-- [ ] Tests de integración (endpoints)
 - [ ] Optimizaciones adicionales (paginación, cache)
 
 **Estado**: ✅ **BACKEND FUNCIONAL** - Todas las funcionalidades core implementadas y probadas
@@ -360,8 +359,8 @@ UI/UX Final    ████████████████████ 100%
 | #001 | JWT no implementa refresh token | Baja | Pendiente (mejora futura) | Backend |
 | #002 | Puertos diferentes en macOS (8080) y Windows (8082) | Baja | Documentado | Infra |
 | #003 | Falta implementar diseño final de Figma en Flutter | Media | Completado | Frontend |
-| #004 | Sin tests automatizados | Alta | Pendiente para entrega final | Ambos |
-| #005 | Falta documentación Swagger | Media | Pendiente | Backend |
+| #004 | Cobertura de tests parcial (~50%) | Media | En progreso | Ambos |
+| #005 | Documentación Swagger/OpenAPI implementada | Baja | Completado | Backend |
 
 ---
 
@@ -372,14 +371,14 @@ UI/UX Final    ████████████████████ 100%
   - Líneas de código: ~4,500
   - Clases Java: 45+
   - Endpoints funcionales: 15
-  - Cobertura de tests: 0% (pendiente)
+Cobertura de tests: ~50% (en progreso)
 
 - **Frontend**:
   - Líneas de código: ~3,200
   - Widgets: 25+
   - Pantallas: 8
   - Modelos de datos: 10+
-  - Cobertura de tests: 0% (pendiente)
+Cobertura de tests: ~50% (en progreso)
 
 ### Base de Datos
 - Tablas creadas: 6/6 (100%)
@@ -414,8 +413,8 @@ UI/UX Final    ████████████████████ 100%
 3. ✅ Diseño UI/UX en Figma completo
 4. ✅ Base de datos con datos de prueba
 5. ✅ Diseño final de Figma implementado en Flutter (100% completado)
-6. ❌ Tests (pendiente para entrega final)
-7. ❌ Swagger (pendiente)
+6. ⚠️ Tests (en progreso ~50%)
+7. ✅ Swagger implementado
 
 
 ### Entrega Final (27 de Marzo 2026) 🎯
