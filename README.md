@@ -139,8 +139,13 @@ DesignWorks/
 - **[🔌 API REST](docs/API.md)** - Endpoints y ejemplos
 
 ### Documentos de Fase
-- [📄 Fase de Análisis (PDF)](docs/imaicela_jaramillo_luis_PROYECTO_DAM_FASE_ANALISIS.pdf)
-- [📄 Fase de Diseño (PDF)](docs/imaicela_jaramillo_luis_PROYECTO_DAM_FASE_DISENO.pdf)
+- [📄 Fase de Análisis (PDF)](docs/fase/imaicela_jaramillo_luis_PROYECTO_DAM_FASE_ANALISIS.pdf)
+- [📄 Fase de Diseño (PDF)](docs/fase/imaicela_jaramillo_luis_PROYECTO_DAM_FASE_DISENO.pdf)
+
+### 📄 Entregables Finales
+- [📘 Memoria](docs/entregables/imaicela_jaramillo_luis_PROYECTO_DAM_MEMORIA.pdf)
+- [📗 Manual de Uso](docs/entregables/imaicela_jaramillo_luis_PROYECTO_DAM_MANUAL_USO.pdf)
+- [🧪 Plan de Pruebas](docs/entregables/imaicela_jaramillo_luis_PROYECTO_DAM_PLAN_PRUEBAS.pdf)
 
 ### Diseño y Prototipo
 - **[🎨 Prototipo en Figma](https://www.figma.com/proto/5QfdQWsQ9NVGnyYWs5vkfv/DESIGNWORKS?page-id=0%3A1&node-id=1-3&viewport=474%2C252%2C0.63&t=mKCYhBM2FJWI9Tbb-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1%3A3)** - Diseño interactivo de la aplicación
