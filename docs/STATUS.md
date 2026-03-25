@@ -317,32 +317,17 @@ UI/UX Final    ████████████████████ 100%
 
 ## 🔄 En Progreso Activo
 
-### Backend
-1. **Documentación Swagger/OpenAPI** (Prioridad: Media)
-   - Configuración de Springdoc
-   - Anotaciones en controllers
-   - Generación de documentación interactiva
-
-### Testing (Prioridad: Alta para entrega final)
-- Tests unitarios del backend
-- Tests de integración de endpoints
-- Tests de widgets en Flutter
+### Testing (Prioridad: Alta)
+- Ampliación de cobertura de tests (actualmente ~50%)
+- Mejora de tests de integración y widgets
 
 ---
 
-## ⏳ Pendiente (Para Entrega Final - 27 de Marzo)
+## ⏳ Pendiente (Post-Entrega / Mejora Continua)
 
-### Testing (CRÍTICO)
-- [ ] Tests unitarios del backend (servicios, repositorios)
-- [ ] Tests de integración (endpoints completos)
-- [ ] Tests de widgets en Flutter
-- [ ] Cobertura mínima: 60%
-
-### Documentación
-- [ ] Swagger/OpenAPI completo y funcional
-- [ ] README actualizado con ejemplos de uso
-- [ ] Guías de usuario final (opcional)
-- [ ] Video demo de la aplicación (opcional)
+### Testing (Mejora)
+- [ ] Aumentar cobertura de tests (objetivo: 60%+)
+- [ ] Refinar tests de widgets en Flutter
 
 ### Optimizaciones
 - [ ] Paginación en listados largos
