@@ -1,6 +1,19 @@
 # DesignWorks
 > Sistema de gestión de trabajos para estudios de diseño gráfico
 
+## 🎥 Video Demo
+
+Se ha preparado una demostración completa del funcionamiento de la aplicación:
+
+👉 [Ver video demo](https://drive.google.com/file/d/1q9Xe_oLDmNpsCgmnV3ms7Eq1vey68HV1/view)
+
+⚠️ **Nota**: El acceso al video está restringido únicamente a cuentas de Gmail bajo el dominio de **Educación Navarra**.
+
+ℹ️ **Información adicional**:  
+Para testear la aplicación en local, se recomienda el uso de un **dispositivo físico conectado por cable USB** y con el **modo desarrollador activado**, tal y como se explica en detalle en la guía de configuración :contentReference[oaicite:0]{index=0}.  
+
+En el video demo se muestra la ejecución mediante **depuración inalámbrica por WiFi**, como alternativa al uso de cable.
+
 ## 🟢 Estado del sistema
 
 El sistema se encuentra **completamente funcional** y listo para la fase final de:
