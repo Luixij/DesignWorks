@@ -14,7 +14,7 @@ Backend y frontend están completamente integrados y operativos.
 [![Estado](https://img.shields.io/badge/Estado-Funcional-success)](https://github.com/tuusuario/designworks)
 [![Backend](https://img.shields.io/badge/Backend-90%25-blue)](docs/STATUS.md)
 [![Frontend](https://img.shields.io/badge/Frontend-85%25-success)](docs/STATUS.md)
-[![Tests](https://img.shields.io/badge/Tests-Manual-yellow)](docs/STATUS.md)
+[![Tests](https://img.shields.io/badge/Tests-50%25-yellow)](docs/STATUS.md)
 
 ## 📋 Descripción
 
@@ -32,7 +32,7 @@ Backend y frontend están completamente integrados y operativos.
 ✅ Frontend:          █████████████████░░░ 85% - FUNCIONAL
 ✅ UI/UX (Figma):     ████████████████████ 100% - COMPLETO
 ✅ UI Implementación: ████████████████████ 100% - COMPLETO
-❌ Tests:             ░░░░░░░░░░░░░░░░░░░░ 0% - PENDIENTE
+⚠️ Tests: ██████████░░░░░░░░░░ 50% - EN PROGRESO
 ```
 
 ## 🏗️ Arquitectura
