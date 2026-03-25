@@ -531,11 +531,12 @@ Estado general del sistema:
 
 **Desarrollador**: Luis Imaicela  
 **Tutor**: Santiago Roman Viguera  
-**Email**: limaicejar@educacion.navarra.es 
-**Web**: luisimaicela.com
+
+- 🌐 Web: [luisimaicela.com](https://luisimaicela.com)
+- 📧 Email: limaicejar@educacion.navarra.es
 
 ---
 
 **Documento generado**: 9 de Febrero de 2026  
-**Próxima revisión**: 2 de Marzo de 2026 (Entrega 1)  
+**Próxima revisión**: 25 de Marzo de 2026 (Entrega Final)  
 **Versión**: 1.0
